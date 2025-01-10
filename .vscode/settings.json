@@ -1,0 +1,19 @@
+{
+	"editor.tabSize": 2,
+	"prettier.singleQuote": true,
+	"editor.formatOnPaste": true,
+	"editor.formatOnSave": true,
+	"prettier.tabWidth": 4,
+	"prettier.useTabs": true,
+	"cSpell.words": [
+		"Encash",
+		"encashment",
+		"Napsa",
+		"Nhima",
+		"nihma",
+		"Pageable",
+		"Paye",
+		"Recaptcha",
+		"Stanbic"
+	]
+}

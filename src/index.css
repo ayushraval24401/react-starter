@@ -1,0 +1,20 @@
+*,
+::after,
+::before {
+	margin: 0px;
+	padding: 0px;
+	box-sizing: border-box;
+	font-family: 'Lexend', sans-serif !important;
+}
+
+html {
+	font-size: 10px;
+}
+
+body:has(.stop-scroll-x) {
+	overflow: hidden;
+}
+
+body {
+	font-family: 'Lexend', sans-serif;
+}
