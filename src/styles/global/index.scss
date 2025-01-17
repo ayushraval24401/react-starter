@@ -1,0 +1,25 @@
+@import './variables';
+
+// Global styles and overrides for Ant Design
+:global {
+	body {
+		margin: 0;
+		font-family: 'Roboto', sans-serif;
+	}
+
+	.ant-layout-header {
+		background-color: $header-bg;
+	}
+
+	.ant-menu-dark .ant-menu-item {
+		color: $text-light;
+
+		&:hover {
+			color: $primary-color;
+		}
+	}
+
+	.ant-menu-dark .ant-menu-item-selected {
+		background-color: $primary-color;
+	}
+}

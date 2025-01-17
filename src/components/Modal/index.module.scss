@@ -1,0 +1,32 @@
+@import '../../../styles/global/variables';
+
+.globalModal {
+	.ant-modal-content {
+		background-color: $header-bg;
+		border-radius: 8px;
+
+		.ant-modal-header {
+			background-color: $header-bg;
+			border-bottom: 1px solid $divider-color;
+			color: $text-dark;
+		}
+
+		.ant-modal-title {
+			font-size: 16px;
+			font-weight: bold;
+		}
+
+		.ant-modal-close {
+			color: $text-dark;
+
+			&:hover {
+				color: $primary-color;
+			}
+		}
+
+		.ant-modal-body {
+			padding: 24px;
+			color: $text-dark;
+		}
+	}
+}

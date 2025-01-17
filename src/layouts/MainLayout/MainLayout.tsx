@@ -1,23 +1,27 @@
-import React, { useState } from 'react';
-import Header from './Header';
+import { Layout } from 'antd';
+import React from 'react';
 import Sidebar from './Sidebar';
-import SettingsModal from './SettingsModal';
-import styles from '';
+import AppHeader from './AppHeader';
+
+const { Content } = Layout;
 
 const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-	const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-
-	const toggleSettingsModal = () => {
-		setIsSettingsOpen(!isSettingsOpen);
-	};
-
 	return (
-		<div className={styles.mainLayout}>
-			<Header onSettingsClick={toggleSettingsModal} />
+		<Layout style={{ minHeight: '100vh' }}>
 			<Sidebar />
-			<main className={styles.content}>{children}</main>
-			{isSettingsOpen && <SettingsModal onClose={toggleSettingsModal} />}
-		</div>
+			<Layout>
+				<AppHeader/>
+
+				<Content
+					style={{
+						padding: '16px',
+						background: '#f3f5f7',
+					}}
+				>
+					{children}
+				</Content>
+			</Layout>
+		</Layout>
 	);
 };
 

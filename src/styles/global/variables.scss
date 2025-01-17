@@ -1,0 +1,18 @@
+$primary-color: #6d44a7;
+$secondary-color: #ffffff;
+$text-dark: #000000;
+$text-light: #6e6e6e;
+$hover-color: #f4f4f4;
+$sidebar-bg: #f4f4f4;
+$header-bg: #ffffff;
+$divider-color: #e8e8e8;
+
+:export {
+	primaryColor: $primary-color;
+	secondaryColor: $secondary-color;
+	textDark: $text-dark;
+	textLight: $text-light;
+	hoverColor: $hover-color;
+	sidebarBg: $sidebar-bg;
+	headerBg: $header-bg;
+}
