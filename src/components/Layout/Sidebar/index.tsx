@@ -1,15 +1,14 @@
 //src/layouts/MainLayout/Sidebar.tsx
-import React, { useState } from 'react';
-import { Layout, Menu, Image } from 'antd';
 import {
-	DashboardOutlined,
-	UserOutlined,
-	ClockCircleOutlined,
-	WalletOutlined,
 	BarChartOutlined,
-	MenuUnfoldOutlined,
+	ClockCircleOutlined,
+	DashboardOutlined,
 	MenuFoldOutlined,
+	UserOutlined,
+	WalletOutlined
 } from '@ant-design/icons';
+import { Image, Layout, Menu } from 'antd';
+import React, { useState } from 'react';
 import styles from './index.module.scss';
 import './index.scss';
 

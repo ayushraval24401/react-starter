@@ -1,10 +1,17 @@
-import React from 'react';
-import { useRoutes } from 'react-router-dom';
-import appRoutes from './AppRoutes';
+import SecurityConfiguration from 'components/Security/security-configuration';
+import Home from 'pages/Home';
+import { createBrowserRouter } from 'react-router-dom';
 
-const Routes: React.FC = () => {
-	// Use combined app routes
-	return useRoutes(appRoutes);
-};
+const router = createBrowserRouter([
+	{
+		element: <SecurityConfiguration />,
+		children: [
+			{
+				path: '/',
+				element: <Home />,
+			},
+		],
+	},
+]);
 
-export default Routes;
+export default router;

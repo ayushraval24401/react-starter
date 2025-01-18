@@ -1,6 +1,6 @@
 //src/components/ThemeSwitch/ThemeSwitch.tsx
-import React from 'react';
 import { Switch } from 'antd';
+import React from 'react';
 import { useTheme } from '../../context/ThemeContext';
 
 const ThemeSwitch: React.FC = () => {

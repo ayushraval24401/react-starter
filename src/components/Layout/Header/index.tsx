@@ -1,14 +1,14 @@
 //src/layouts/MainLayout/AppHeader.tsx
-import React, { useState } from 'react';
-import { Layout, Avatar, Space, Tooltip, Modal, Button } from 'antd';
 import {
-	SettingOutlined,
-	LogoutOutlined,
-	UserOutlined,
 	CloseOutlined,
+	LogoutOutlined,
+	SettingOutlined,
+	UserOutlined,
 } from '@ant-design/icons';
+import { Avatar, Button, Layout, Modal, Space, Tooltip } from 'antd';
+import ThemeSwitch from 'components/ThemeSwitch';
+import React, { useState } from 'react';
 import './index.scss';
-import ThemeSwitch from 'components/ThemeSwitch/ThemeSwitch';
 
 const { Header } = Layout;
 

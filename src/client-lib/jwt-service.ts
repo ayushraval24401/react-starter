@@ -1,10 +1,17 @@
 import { jwtDecode } from 'jwt-decode';
 
+interface DecodedToken {
+	exp: number;
+	permissions: string[];
+	type: string;
+	[key: string]: any; // Extendable for other properties that your token may include
+}
+
 export function hasPermissionFromToken(
 	token: string,
 	userPermissions: string[]
-) {
-	const userData: any = jwtDecode(token);
+): boolean {
+	const userData: DecodedToken = jwtDecode(token); // Type safety here
 	if (!userData) {
 		return false;
 	}
@@ -18,7 +25,10 @@ export function hasPermissionFromToken(
 	);
 }
 
-export function hasPermission(userData: any, userPermissions: string[]) {
+export function hasPermission(
+	userData: DecodedToken | null,
+	userPermissions: string[]
+): boolean {
 	if (!userData) {
 		return false;
 	}
@@ -28,8 +38,8 @@ export function hasPermission(userData: any, userPermissions: string[]) {
 	);
 }
 
-export function hasRoleFromToken(token: string, roles: string[]) {
-	const userData: any = jwtDecode(token);
+export function hasRoleFromToken(token: string, roles: string[]): boolean {
+	const userData: DecodedToken = jwtDecode(token);
 
 	if (!userData) {
 		return false;
@@ -40,7 +50,10 @@ export function hasRoleFromToken(token: string, roles: string[]) {
 	return Date.now() <= exp && roles.some((role) => userData.type === role);
 }
 
-export function hasRoles(userData: any, roles: string[]) {
+export function hasRoles(
+	userData: DecodedToken | null,
+	roles: string[]
+): boolean {
 	if (!userData) {
 		return false;
 	}
@@ -48,8 +61,8 @@ export function hasRoles(userData: any, roles: string[]) {
 	return roles.some((role) => userData.type === role);
 }
 
-export function isExpired(token: string) {
-	const userData = jwtDecode(token);
+export function isExpired(token: string): boolean {
+	const userData: DecodedToken = jwtDecode(token);
 	if (!userData.exp) {
 		return false;
 	}
@@ -57,9 +70,9 @@ export function isExpired(token: string) {
 	return Date.now() > exp;
 }
 
-export function willExpire(token: string, inMinute = 1) {
+export function willExpire(token: string, inMinute = 1): boolean {
 	try {
-		const userData = jwtDecode(token);
+		const userData: DecodedToken = jwtDecode(token);
 		if (!userData.exp) {
 			return false;
 		}
@@ -74,6 +87,6 @@ export function willExpire(token: string, inMinute = 1) {
 	}
 }
 
-export function decodeToken(token: string) {
+export function decodeToken(token: string): DecodedToken {
 	return jwtDecode(token);
 }

@@ -1,18 +1,14 @@
 //src/app.tsx
-
 import { ThemeProvider } from 'context/ThemeContext';
-import MainLayout from 'layouts/MainLayout/MainLayout';
-import './styles/global/theme.scss';
+import { RouterProvider } from 'react-router-dom';
+import router from 'routes';
 import './App.scss';
+import './styles/global/theme.scss';
 
 function App() {
 	return (
 		<ThemeProvider>
-			<div className="App">
-				<MainLayout>
-					<h1>App Content</h1>
-				</MainLayout>
-			</div>
+			<RouterProvider router={router} />
 		</ThemeProvider>
 	);
 }
