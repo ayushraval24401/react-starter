@@ -1,6 +1,7 @@
 // src/styles/global/theme.scss
 body.light {
 	--primary-color: #584495;
+	--secondary-color: #e9e3ff;
 	--background-color: #ffffff;
 	--text-color: #000000;
 	--text-secondary: #6e6e6e;
@@ -11,18 +12,21 @@ body.light {
 	--card-bg: #ffffff;
 	--link-color: #584495;
 	--link-hover: #7a65c8;
+	--modal-mask-bg: rgba(0, 0, 0, 0.6);
 }
 
 body.dark {
 	--primary-color: #7a65c8;
+	--secondary-color: #504090;
 	--background-color: #141414;
 	--text-color: #ffffff;
 	--text-secondary: #a6a6a6;
 	--border-color: #303030;
 	--hover-color: #2d2d2d;
 	--sidebar-bg: #1f1f1f;
-	--header-bg: #141414;
-	--card-bg: #1f1f1f;
+	--header-bg: #181818;
+	--card-bg: #222222;
 	--link-color: #7a65c8;
-	--link-hover: #9b85e3;
+	--link-hover: #9a8bd8;
+	--modal-mask-bg: rgba(0, 0, 0, 0.7);
 }

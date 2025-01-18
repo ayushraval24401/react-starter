@@ -10,8 +10,8 @@ import {
 	MenuUnfoldOutlined,
 	MenuFoldOutlined,
 } from '@ant-design/icons';
-import styles from './Sidebar.module.scss';
-import './Sidebar.scss';
+import styles from './index.module.scss';
+import './index.scss';
 
 const { Sider } = Layout;
 
@@ -30,7 +30,11 @@ const Sidebar: React.FC = () => {
 			trigger={null}
 		>
 			{/* Logo and Trigger Section */}
-			<div className={styles.logoContainer}>
+			<div
+				className={styles.logoContainer}
+				onClick={collapsed ? toggleCollapse : undefined} // Expand on logo click when collapsed
+				style={{ cursor: collapsed ? 'pointer' : 'default' }} // Pointer cursor only in collapsed mode
+			>
 				<Image
 					src={
 						collapsed
@@ -42,15 +46,19 @@ const Sidebar: React.FC = () => {
 					className={styles.logoImage}
 					style={{
 						transform: collapsed ? 'scale(0.7)' : 'scale(1)',
-						transition: 'transform 0.7s',
+						transition: 'transform 0.7s ease-in-out', // Smooth transition for scaling
+						padding: '10px',
 					}}
 				/>
-				<div
-					className={styles.collapseTrigger}
-					onClick={toggleCollapse}
-				>
-					{collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-				</div>
+
+				{!collapsed && (
+					<div
+						className={styles.collapseTrigger}
+						onClick={toggleCollapse}
+					>
+						<MenuFoldOutlined />
+					</div>
+				)}
 			</div>
 
 			{/* Menu Section */}

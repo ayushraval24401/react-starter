@@ -7,7 +7,7 @@ import {
 	UserOutlined,
 	CloseOutlined,
 } from '@ant-design/icons';
-import './AppHeader.scss';
+import './index.scss';
 import ThemeSwitch from 'components/ThemeSwitch/ThemeSwitch';
 
 const { Header } = Layout;

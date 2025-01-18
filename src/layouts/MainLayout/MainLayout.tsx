@@ -1,8 +1,8 @@
 import { Layout } from 'antd';
 import React from 'react';
-import Sidebar from './Sidebar';
-import AppHeader from './AppHeader';
 import styles from './MainLayout.module.scss';
+import Sidebar from 'components/Layout/Sidebar';
+import AppHeader from 'components/Layout/Header';
 const { Content } = Layout;
 
 const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {

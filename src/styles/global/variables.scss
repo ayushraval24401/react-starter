@@ -1,13 +1,44 @@
-//src/styles/global/variables.scss
+/* src/styles/global/variables.scss */
 
-$primary-color: #584495;
-$secondary-color: #ffffff;
-$text-dark: #000000;
-$text-light: #6e6e6e;
-$hover-color: #f4f4f4;
-$sidebar-bg: #f4f4f4;
-$header-bg: #ffffff;
-$divider-color: #e8e8e8;
+// Color palette
+$primary-color: #584495; // Primary color (used for brand color)
+$secondary-color: #ffffff; // Secondary color (mostly for white elements)
+$text-dark: #000000; // Dark text color (for main content)
+$text-light: #6e6e6e; // Lighter text color (for muted text)
+$hover-color: #f4f4f4; // Hover background color
+$sidebar-bg: #f4f4f4; // Sidebar background color
+$header-bg: #ffffff; // Header background color
+$divider-color: #e8e8e8; // Divider line color (for borders)
+$border-color: #ddd; // Border color
+$text-color: #333; // Default text color
+$white: #ffffff; // White color (for backgrounds, etc.)
+$black: #000000; // Black color
+
+// Additional colors
+$success-color: #28a745; // Success message color
+$warning-color: #ffc107; // Warning message color
+$error-color: #dc3545; // Error message color
+$info-color: #17a2b8; // Info message color
+$light-gray: #f8f9fa; // Light gray background
+$dark-gray: #343a40; // Dark gray (for contrast or dark mode)
+
+$primary-bg: $primary-color; // Background using primary color
+$secondary-bg: $secondary-color; // Background using secondary color
+$button-bg: $primary-color; // Button background color
+$button-hover-bg: darken($primary-color, 5%); // Button hover background color
+
+$link-color: $primary-color; // Link color (usually for clickable items)
+$active-link-color: darken($primary-color, 10%); // Active link color
+
+// Font and spacing
+$font-family-base: 'Arial', sans-serif; // Base font family
+$font-size-base: 16px; // Base font size
+$line-height-base: 1.5; // Line height for better readability
+$spacing-unit: 16px; // Base spacing unit for margins and paddings
+
+// Shadow variables
+$box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); // Light box shadow
+$hover-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); // Hover shadow for elevation effect
 
 :export {
 	primaryColor: $primary-color;
@@ -17,4 +48,32 @@ $divider-color: #e8e8e8;
 	hoverColor: $hover-color;
 	sidebarBg: $sidebar-bg;
 	headerBg: $header-bg;
+	dividerColor: $divider-color;
+	borderColor: $border-color;
+	textColor: $text-color;
+	white: $white;
+	black: $black;
+
+	successColor: $success-color;
+	warningColor: $warning-color;
+	errorColor: $error-color;
+	infoColor: $info-color;
+	lightGray: $light-gray;
+	darkGray: $dark-gray;
+
+	primaryBg: $primary-bg;
+	secondaryBg: $secondary-bg;
+	buttonBg: $button-bg;
+	buttonHoverBg: $button-hover-bg;
+
+	linkColor: $link-color;
+	activeLinkColor: $active-link-color;
+
+	fontFamilyBase: $font-family-base;
+	fontSizeBase: $font-size-base;
+	lineHeightBase: $line-height-base;
+	spacingUnit: $spacing-unit;
+
+	boxShadow: $box-shadow;
+	hoverShadow: $hover-shadow;
 }
