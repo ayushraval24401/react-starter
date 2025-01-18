@@ -1,3 +1,4 @@
+//src/layouts/MainLayout/AppHeader.tsx
 import React, { useState } from 'react';
 import { Layout, Avatar, Space, Tooltip, Modal, Button } from 'antd';
 import {
@@ -7,6 +8,7 @@ import {
 	CloseOutlined,
 } from '@ant-design/icons';
 import './AppHeader.scss';
+import ThemeSwitch from 'components/ThemeSwitch/ThemeSwitch';
 
 const { Header } = Layout;
 
@@ -33,6 +35,7 @@ const AppHeader: React.FC = () => {
 						<LogoutOutlined
 							style={{ fontSize: '20px', cursor: 'pointer' }}
 						/>
+						<ThemeSwitch />
 					</Tooltip>
 				</Space>
 			</Header>

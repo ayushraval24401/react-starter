@@ -1318,3 +1318,30 @@ export const convertArrayToCSV = (data: any) => {
 		// You can add more Papa.unparse options here
 	});
 };
+export const lightTheme = {
+	primaryColor: '#584495', // Main brand color
+	secondaryColor: '#ffffff', // Background
+	textColor: '#000000', // Primary text color
+	textSecondary: '#6e6e6e', // Secondary text color
+	borderColor: '#e8e8e8', // Border color
+	hoverColor: '#f4f4f4', // Hover background
+	sidebarBg: '#f4f4f4', // Sidebar background
+	headerBg: '#ffffff', // Header background
+	cardBg: '#ffffff', // Card background
+	linkColor: '#584495', // Links
+	linkHover: '#7a65c8', // Hover state for links
+};
+
+export const darkTheme = {
+	primaryColor: '#7a65c8', // Slightly lighter for better contrast
+	secondaryColor: '#141414', // Dark background
+	textColor: '#ffffff', // Primary text color
+	textSecondary: '#a6a6a6', // Secondary text color
+	borderColor: '#303030', // Border color
+	hoverColor: '#2d2d2d', // Hover background
+	sidebarBg: '#1f1f1f', // Sidebar background
+	headerBg: '#141414', // Header background
+	cardBg: '#1f1f1f', // Card background
+	linkColor: '#7a65c8', // Links
+	linkHover: '#9b85e3', // Hover state for links
+};

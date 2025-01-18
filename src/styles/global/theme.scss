@@ -1,0 +1,28 @@
+// src/styles/global/theme.scss
+body.light {
+	--primary-color: #584495;
+	--background-color: #ffffff;
+	--text-color: #000000;
+	--text-secondary: #6e6e6e;
+	--border-color: #e8e8e8;
+	--hover-color: #f4f4f4;
+	--sidebar-bg: #f4f4f4;
+	--header-bg: #ffffff;
+	--card-bg: #ffffff;
+	--link-color: #584495;
+	--link-hover: #7a65c8;
+}
+
+body.dark {
+	--primary-color: #7a65c8;
+	--background-color: #141414;
+	--text-color: #ffffff;
+	--text-secondary: #a6a6a6;
+	--border-color: #303030;
+	--hover-color: #2d2d2d;
+	--sidebar-bg: #1f1f1f;
+	--header-bg: #141414;
+	--card-bg: #1f1f1f;
+	--link-color: #7a65c8;
+	--link-hover: #9b85e3;
+}
