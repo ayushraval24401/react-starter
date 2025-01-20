@@ -1,0 +1,23 @@
+.globalTag {
+	font-size: 14px;
+	padding: 4px 12px;
+	border-radius: 12px;
+	display: inline-flex;
+	align-items: center;
+
+	&.ant-tag {
+		transition: all 0.3s ease;
+	}
+
+	&.ant-tag-checkable {
+		cursor: pointer;
+
+		&:hover {
+			background-color: #f0f0f0;
+		}
+	}
+
+	&.ant-tag-closable .anticon-close {
+		font-size: 12px;
+	}
+}
