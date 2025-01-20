@@ -1,6 +1,13 @@
 import React, { ChangeEvent, useState } from 'react';
 import { Input, Button, Typography } from 'antd';
 import { SizeType } from 'antd/es/config-provider/SizeContext';
+import {
+	CheckCircleOutlined,
+	CloseCircleOutlined,
+	EyeInvisibleFilled,
+	EyeOutlined,
+	InfoCircleOutlined,
+} from '@ant-design/icons';
 
 type Props = {
 	name: string;
@@ -39,26 +46,31 @@ const PasswordField: React.FC<Props> = ({
 }) => {
 	const [hasError, setHasError] = useState(false);
 	const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+	const [minLengthValid, setMinLengthValid] = useState<boolean | null>(null);
+	const [hasSpecialAndNumber, setHasSpecialAndNumber] = useState<
+		boolean | null
+	>(null);
 
 	// Regular expressions for password validation
 	const regexLowercase = /[a-z]/;
 	const regexUppercase = /[A-Z]/;
 	const regexDigit = /\d/;
 	const regexSpecialChar = /[!@#$%^&*(),.?":{}|<>]/;
-	const regexLength = /.{8,}/;
+	const regexLength = /.{8,16}/;
 
 	const handleChange = (value: string) => {
-		setHasError(validatePassword(value)); // Validate password on change
 		onChange(value);
+		// validatePassword(value);
 	};
 
 	const handleBlur = (e: ChangeEvent<HTMLInputElement>) => {
-		setHasError(validatePassword(e.target.value)); // Validate password on blur
+		validatePassword(e.target.value);
 	};
 
 	const handleFocus = (e: ChangeEvent<HTMLInputElement>) => {
 		if (isError) {
-			setHasError(false); // Reset error state if the field is focused again
+			setMinLengthValid(null);
+			setHasSpecialAndNumber(null); // Reset error state on focus
 		}
 	};
 
@@ -68,13 +80,19 @@ const PasswordField: React.FC<Props> = ({
 
 	// Validate password based on regex conditions
 	const validatePassword = (password: string) => {
-		return (
-			!regexLowercase.test(password) ||
-			!regexUppercase.test(password) ||
-			!regexDigit.test(password) ||
-			!regexSpecialChar.test(password) ||
-			!regexLength.test(password)
-		);
+		const invalidLength = regexLength.test(password);
+		const invalidChar =
+			regexLowercase.test(password) &&
+			regexUppercase.test(password) &&
+			regexDigit.test(password) &&
+			regexSpecialChar.test(password);
+
+		setMinLengthValid(invalidLength);
+		setHasSpecialAndNumber(invalidChar);
+
+		if (invalidLength || invalidChar) {
+			setHasError(true);
+		}
 	};
 
 	return (
@@ -106,7 +124,9 @@ const PasswordField: React.FC<Props> = ({
 					onFocus={handleFocus}
 				/>
 				<Button
-					icon={showPassword ? 'eye-invisible' : 'eye'}
+					icon={
+						showPassword ? <EyeInvisibleFilled /> : <EyeOutlined />
+					}
 					onClick={togglePasswordVisibility}
 					style={{
 						position: 'absolute',
@@ -119,7 +139,9 @@ const PasswordField: React.FC<Props> = ({
 				/>
 			</div>
 
-			{(isError || hasError) && (
+			{/* {(isError ||
+				minLengthValid === false ||
+				hasSpecialAndNumber === false) && (
 				<p
 					style={{
 						color: 'red',
@@ -129,51 +151,54 @@ const PasswordField: React.FC<Props> = ({
 				>
 					{helperText}
 				</p>
-			)}
+			)} */}
 
 			<div style={{ marginTop: '8px', fontSize: '12px', color: '#888' }}>
-				<Typography.Text type={hasError ? 'danger' : undefined}>
-					Password must contain:
-				</Typography.Text>
-				<ul>
-					<li
+				<div>
+					<div
 						style={{
-							color: regexLowercase.test(value) ? 'green' : 'red',
+							color:
+								minLengthValid === true
+									? 'green'
+									: minLengthValid === false
+									? '#ff4d4f'
+									: '#b4b3b3',
 						}}
 					>
-						At least one lowercase letter
-					</li>
-					<li
+						{minLengthValid === true ? (
+							<CheckCircleOutlined style={{ color: 'green' }} />
+						) : minLengthValid === false ? (
+							<CloseCircleOutlined style={{ color: '#ff4d4f' }} />
+						) : (
+							<InfoCircleOutlined style={{ color: '#b4b3b3' }} />
+						)}
+						<span style={{ marginLeft: '5px' }}>
+							Password must be between 8 and 16 characters.
+						</span>
+					</div>
+					<div
 						style={{
-							color: regexUppercase.test(value) ? 'green' : 'red',
+							color:
+								hasSpecialAndNumber === true
+									? 'green'
+									: hasSpecialAndNumber === false
+									? '#ff4d4f'
+									: '#b4b3b3',
 						}}
 					>
-						At least one uppercase letter
-					</li>
-					<li
-						style={{
-							color: regexDigit.test(value) ? 'green' : 'red',
-						}}
-					>
-						At least one digit
-					</li>
-					<li
-						style={{
-							color: regexSpecialChar.test(value)
-								? 'green'
-								: 'red',
-						}}
-					>
-						At least one special character
-					</li>
-					<li
-						style={{
-							color: regexLength.test(value) ? 'green' : 'red',
-						}}
-					>
-						At least 8 characters
-					</li>
-				</ul>
+						{hasSpecialAndNumber === true ? (
+							<CheckCircleOutlined style={{ color: 'green' }} />
+						) : hasSpecialAndNumber === false ? (
+							<CloseCircleOutlined style={{ color: '#ff4d4f' }} />
+						) : (
+							<InfoCircleOutlined style={{ color: '#b4b3b3' }} />
+						)}
+						<span style={{ marginLeft: '5px' }}>
+							Includes capital and lowercase characters, special
+							characters, and numbers.
+						</span>
+					</div>
+				</div>
 			</div>
 		</div>
 	);

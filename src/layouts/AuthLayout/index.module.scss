@@ -1,0 +1,30 @@
+.auth-layout {
+	display: flex;
+	height: 100vh;
+
+	.left-section {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 40px;
+		background-color: var(--left-section-bg);
+	}
+
+	.right-section {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background-color: var(--right-section-bg);
+		overflow: hidden;
+
+		.image {
+			max-width: 100%;
+			height: auto;
+		}
+	}
+}
+
+.content {
+	width: 100%;
+	margin: 0 auto;
+}

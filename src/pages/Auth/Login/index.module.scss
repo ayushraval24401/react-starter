@@ -1,0 +1,34 @@
+.login-container {
+	display: flex;
+	flex-direction: column;
+	align-items: start;
+	width: 100%;
+	padding: 0px 5rem;
+}
+
+.logo {
+	display: block;
+	margin: 0px 0px 20px 0px;
+	max-width: 200px;
+}
+
+.title {
+	font-size: 24px;
+	font-weight: bold;
+	margin-bottom: 20px;
+}
+
+.forgot-password {
+	float: right;
+	color: var(--link-color);
+}
+
+.login-button {
+	width: 100%;
+	padding: 10px;
+	background-color: var(--primary-color);
+}
+
+.form {
+	width: 100%;
+}

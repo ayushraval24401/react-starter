@@ -1345,3 +1345,8 @@ export const darkTheme = {
 	linkColor: '#7a65c8', // Links
 	linkHover: '#9b85e3', // Hover state for links
 };
+
+export const isValidEmail = (email: string): boolean => {
+	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+	return emailRegex.test(email);
+};
