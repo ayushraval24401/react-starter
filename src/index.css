@@ -14,7 +14,34 @@ html {
 body:has(.stop-scroll-x) {
 	overflow: hidden;
 }
+::-webkit-scrollbar {
+	width: 3px !important;
+	height: 5px !important;
+}
 
+::-webkit-scrollbar-track {
+	background: #f1f1f1 !important;
+	border-radius: 12px !important;
+}
+
+::-webkit-scrollbar-thumb {
+	background: rgb(148, 157, 149);
+	background: #ced2d3 !important;
+	border-radius: 12px !important;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: #a2a6a8 !important;
+	border-radius: 12px !important;
+}
+
+.ant-table-wrapper .ant-table {
+	scrollbar-color: unset !important;
+}
+
+.ant-table-column-title {
+	font-weight: 600 !important;
+}
 body {
 	font-family: 'Lexend', sans-serif;
 }

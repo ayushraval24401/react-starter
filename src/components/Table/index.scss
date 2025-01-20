@@ -1,0 +1,144 @@
+/* src/components/GlobalTable/index.module.scss */
+@import '../../styles/global/variables.scss';
+
+.customTable {
+	background-color: var(--secondaryColor);
+	color: var(--textColor);
+
+	:global {
+		.ant-table {
+			background-color: var(--secondaryColor);
+			box-shadow: $table-box-shadow;
+		}
+
+		/* Table Header */
+		.ant-table-thead > tr > th {
+			background-color: var(
+				--secondaryColor
+			) !important; // Important to override Ant Design defaults
+			color: var(--textColor) !important;
+			font-weight: bold;
+			text-align: left;
+			border-bottom: 2px solid var(--borderColor);
+
+			&.ant-table-column-sort {
+				background-color: var(--hoverColor) !important;
+			}
+		}
+
+		/* Table Body Rows */
+		.ant-table-tbody > tr {
+			> td {
+				color: var(--textColor) !important;
+				background-color: var(--secondaryColor) !important;
+				border-bottom: 1px solid var(--borderColor);
+				transition: background-color 0.3s ease;
+			}
+
+			&:hover > td {
+				background-color: var(--hoverColor) !important;
+			}
+		}
+
+		/* Selected Row */
+		.ant-table-tbody > tr.ant-table-row-selected > td {
+			background-color: var(--primaryColor) !important;
+			color: #ffffff !important;
+		}
+
+		.ant-pagination {
+			margin: 16px 0;
+			color: var(--textColor);
+
+			.ant-pagination-total-text {
+				position: absolute;
+				left: 0;
+				color: var(--textColor);
+			}
+
+			// Pagination items
+			.ant-pagination-item {
+				background-color: var(--secondaryColor);
+				border-color: var(--borderColor);
+
+				a {
+					color: var(--textColor);
+				}
+
+				&:hover {
+					border-color: var(--primaryColor);
+
+					a {
+						color: var(--primaryColor);
+					}
+				}
+
+				&-active {
+					background-color: var(--primaryColor);
+					border-color: var(--primaryColor);
+
+					a {
+						color: #ffffff !important;
+					}
+
+					&:hover {
+						background-color: var(--linkHover);
+
+						a {
+							color: #ffffff !important;
+						}
+					}
+				}
+			}
+
+			// Previous and Next buttons
+			.ant-pagination-prev,
+			.ant-pagination-next {
+				button {
+					background-color: var(--secondaryColor);
+					color: var(--textColor);
+					border-color: var(--borderColor);
+
+					&:hover {
+						border-color: var(--primaryColor);
+						color: var(--primaryColor);
+					}
+
+					&:disabled {
+						color: var(--textSecondary);
+						border-color: var(--borderColor);
+						background-color: var(--secondaryColor);
+					}
+				}
+			}
+
+			// Jump input and size changer
+			.ant-pagination-options {
+				.ant-select-selector {
+					background-color: var(--secondaryColor) !important;
+					border-color: var(--borderColor) !important;
+					color: var(--textColor) !important;
+				}
+
+				.ant-select-arrow {
+					color: var(--textColor);
+				}
+
+				.ant-pagination-options-quick-jumper {
+					color: var(--textColor);
+
+					input {
+						background-color: var(--secondaryColor);
+						border-color: var(--borderColor);
+						color: var(--textColor);
+
+						&:hover,
+						&:focus {
+							border-color: var(--primaryColor);
+						}
+					}
+				}
+			}
+		}
+	}
+}

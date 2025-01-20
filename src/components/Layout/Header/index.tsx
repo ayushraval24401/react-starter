@@ -35,8 +35,8 @@ const AppHeader: React.FC = () => {
 						<LogoutOutlined
 							style={{ fontSize: '20px', cursor: 'pointer' }}
 						/>
-						<ThemeSwitch />
 					</Tooltip>
+					<ThemeSwitch />
 				</Space>
 			</Header>
 

@@ -1,11 +1,12 @@
 .layout {
 	display: flex;
 	height: 100vh;
-	overflow: hidden; // Prevent the overall layout from scrolling
+	overflow: hidden; // Prevent the overall layout from scrolling	
 }
 
 .content {
-	overflow-y: auto; // Enables scrolling within the content area
-	height: calc(100vh - 64px); // Fills the remaining vertical space
-	background: #f0f2f5; // Optional background color
+	overflow-y: auto;
+	height: calc(100vh - 64px);
+	background: #f0f2f5;
+	padding: 24px;
 }
