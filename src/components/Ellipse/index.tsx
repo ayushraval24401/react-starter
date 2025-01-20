@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
-import styles from './index.module.scss'; // Make sure this style file is available
+// import styles from './index.module.scss';
 import { Tooltip } from 'antd';
 
 interface EllipseInterface {
-	message: string; // Text to display
-	maxLength: number | string; // Max length to truncate the text
-	isTooltip?: boolean; // Whether to show a tooltip when text is truncated
-	tooltipMessage?: string; // Custom tooltip message
-	isLink?: boolean; // Whether the text should behave as a link
+	message: string;
+	maxLength: number | string;
+	isTooltip?: boolean;
+	tooltipMessage?: string;
+	isLink?: boolean;
 }
 
 const Ellipse = (props: EllipseInterface) => {
@@ -50,7 +50,7 @@ const Ellipse = (props: EllipseInterface) => {
 
 	return (
 		<div
-			className={styles['ellipse-container']}
+			// className={styles['ellipse-container']}
 			ref={textRef}
 			style={containerStyles}
 		>

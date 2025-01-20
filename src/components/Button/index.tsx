@@ -32,7 +32,7 @@ const Buttons = (props: Prop) => {
 		<Space size={gap} align={align} wrap={wrap}>
 			{buttons.map((button: ButtonInterface, index: number) => (
 				<Button
-					key={index} // Using index as key; replace with unique ID for production
+					key={index} 
 					className={button.className}
 					loading={button.isLoading}
 					size={button.size ?? 'middle'}

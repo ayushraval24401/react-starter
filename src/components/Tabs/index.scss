@@ -1,0 +1,39 @@
+// components/Tabs/index.scss
+@import '../../styles/global/variables.scss';
+
+.ant-tabs {
+	.ant-tabs-nav {
+		margin-bottom: 0;
+		padding: 0 16px;
+		border-bottom: 1px solid var(--border-color);
+		background-color: var(--header-bg);
+
+		&::before {
+			border-bottom: none;
+		}
+	}
+
+	.ant-tabs-tab {
+		padding: 8px 16px;
+		color: var(--text-secondary);
+
+		&:hover {
+			color: var(--link-hover);
+		}
+
+		&.ant-tabs-tab-active {
+			.ant-tabs-tab-btn {
+				color: var(--primary-color);
+			}
+		}
+	}
+
+	.ant-tabs-ink-bar {
+		background: var(--primary-color);
+	}
+
+	.ant-tabs-content {
+		background-color: var(--background-color);
+		min-height: 200px;
+	}
+}

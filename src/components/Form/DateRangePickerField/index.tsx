@@ -30,7 +30,6 @@ const CustomDateRangePicker: React.FC<DateRangePickerProps> = ({
 	className,
 	size = 'large',
 }: DateRangePickerProps) => {
-	// Ensure value is a valid 2-element tuple, even if one or both are null or undefined
 	const validValue: [Dayjs | null | undefined, Dayjs | null | undefined] = [
 		value[0] ? dayjs(value[0]) : undefined,
 		value[1] ? dayjs(value[1]) : undefined,
