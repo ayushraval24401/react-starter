@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Space } from 'antd';
 import { useTheme } from '../../context/ThemeContext';
 
-interface ButtonInterface {
+export interface ButtonInterface {
 	text: string;
 	isLoading?: boolean;
 	className?: string;

@@ -3,15 +3,46 @@ import { Button, Space, Tag } from 'antd';
 import { TablePaginationConfig } from 'antd/es/table';
 import { FilterValue, SorterResult } from 'antd/es/table/interface';
 import TabPane from 'antd/es/tabs/TabPane';
+import { ButtonInterface } from 'components/Button';
 import GlobalTable from 'components/Table';
 import GlobalTabs from 'components/Tabs';
+import EmployeeTable from 'features/Employee/EmployeeTable';
+import { EmployeeHeader } from 'features/Employee/Header';
+import SalaryTable from 'features/Employee/SalaryTable';
 import React, { useState } from 'react';
+import { AddSvg } from 'utils/svgs';
 
-const ExamplePage = () => {
+const EmployeePage = () => {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [pageSize, setPageSize] = useState(10);
 	const [totalRecords, setTotalRecords] = useState(100);
 	const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+	const [searchValue, setSearchValue] = useState('');
+	const [statusFilterValue, setStatusFilterValue] = useState('');
+
+	const handleSearch = (value: string) => {
+		setSearchValue(value);
+	};
+
+	const handleStatusFilter = (value: string) => {
+		setStatusFilterValue(value);
+	};
+
+	const buttons: ButtonInterface[] = [
+		{
+			text: 'Add Employee',
+			isLoading: false,
+			className: 'btn-blue',
+			icon: <AddSvg />,
+			fontSize: '16px',
+			variant: 'primary',
+			isSubmit: true,
+			onClick: () => {
+				console.log('Add Employee button clicked');
+			},
+			disabled: false,
+		},
+	];
 
 	// Sample data with more fields
 	const tableData = Array.from({ length: 100 }, (_, index) => ({
@@ -25,7 +56,7 @@ const ExamplePage = () => {
 			Date.now() - Math.floor(Math.random() * 10000000000)
 		).toLocaleDateString(),
 	}));
-	// Enhanced columns with more features
+
 	const columns = [
 		{
 			title: 'ID',
@@ -95,6 +126,14 @@ const ExamplePage = () => {
 		},
 	];
 
+	const expandedRowRender = (record: any) => {
+		return (
+			<p style={{ margin: 0 }}>
+				Extended Info for {record.name}: Lorem ipsum dolor sit amet...
+			</p>
+		);
+	};
+
 	const handleTableChange = (
 		pagination: TablePaginationConfig,
 		filters: Record<string, FilterValue | null>,
@@ -109,107 +148,44 @@ const ExamplePage = () => {
 		setSelectedRowKeys(newSelectedRowKeys);
 	};
 
-	// Custom expandable row render
-	const expandedRowRender = (record: any) => {
-		return (
-			<p style={{ margin: 0 }}>
-				Extended Info for {record.name}: Lorem ipsum dolor sit amet...
-			</p>
-		);
-	};
-
 	return (
 		<>
 			<div
 				style={{
-					maxHeight: 'calc(100vh - 200px)',
+					maxHeight: 'calc(100vh - 250px)',
 				}}
 			>
+				<EmployeeHeader
+					buttons={buttons}
+					handleSearch={handleSearch}
+					handleStatusFilter={handleStatusFilter}
+					searchValue={searchValue}
+					statusFilterValue={statusFilterValue}
+				/>
 				<GlobalTabs defaultActiveKey="1">
 					<TabPane tab="Tab 1" key="1">
-						<GlobalTable
-							// Data
-							data={tableData}
+						<EmployeeTable
 							columns={columns}
-							loading={false}
-							// Pagination
-							pagination={true}
 							currentPage={currentPage}
+							handleSelectChange={handleSelectChange}
+							handleTableChange={handleTableChange}
 							pageSize={pageSize}
-							totalRecords={totalRecords}
-							showSizeChanger={false}
-							// Selection
-							// rowSelection={true}
 							selectedRowKeys={selectedRowKeys}
-							onSelectChange={handleSelectChange}
-							// Display
-							size="middle"
-							bordered={true}
-							showTotalRecords={true}
-							tableLayout="fixed"
-							// Scroll
-							scroll={{ x: '100%', y: 450 }}
-							// Style
-							sticky={true}
-							rowClassName={(record) =>
-								record.status === 'active' ? 'active' : ''
-							}
-							// Custom Components
-							// title={() => <h3>User Management Table</h3>}
-							// Expandable
-							// expandable={{
-							// 	expandedRowRender,
-							// 	expandRowByClick: true,
-							// }}
-							// Event Handlers
-							onTableChange={handleTableChange}
-							onRow={(record) => ({
-								onClick: () =>
-									console.log('Row clicked:', record),
-							})}
+							tableData={tableData}
+							totalRecords={totalRecords}
 						/>
 					</TabPane>
 					<TabPane tab="Tab 2" key="2">
-						<GlobalTable
-							// Data
-							data={tableData}
+						<SalaryTable
 							columns={columns}
-							loading={false}
-							// Pagination
-							pagination={true}
 							currentPage={currentPage}
+							handleSelectChange={handleSelectChange}
+							handleTableChange={handleTableChange}
 							pageSize={pageSize}
-							totalRecords={totalRecords}
-							showSizeChanger={false}
-							// Selection
-							// rowSelection={true}
 							selectedRowKeys={selectedRowKeys}
-							onSelectChange={handleSelectChange}
-							// Display
-							size="middle"
-							bordered={true}
-							showTotalRecords={true}
-							tableLayout="fixed"
-							// Scroll
-							scroll={{ x: '100%', y: 450 }}
-							// Style
-							sticky={true}
-							rowClassName={(record) =>
-								record.status === 'active' ? 'active' : ''
-							}
-							// Custom Components
-							// title={() => <h3>User Management Table</h3>}
-							// Expandable
-							// expandable={{
-							// 	expandedRowRender,
-							// 	expandRowByClick: true,
-							// }}
-							// Event Handlers
-							onTableChange={handleTableChange}
-							onRow={(record) => ({
-								onClick: () =>
-									console.log('Row clicked:', record),
-							})}
+							tableData={tableData}
+							totalRecords={totalRecords}
+							expandedRowRender={expandedRowRender}
 						/>
 					</TabPane>
 				</GlobalTabs>
@@ -218,4 +194,4 @@ const ExamplePage = () => {
 	);
 };
 
-export default ExamplePage;
+export default EmployeePage;
