@@ -38,7 +38,7 @@ const PasswordField: React.FC<Props> = ({
 	width,
 }) => {
 	const [hasError, setHasError] = useState(false);
-	const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+	const [showPassword, setShowPassword] = useState(false); 
 
 	// Regular expressions for password validation
 	const regexLowercase = /[a-z]/;
@@ -48,22 +48,22 @@ const PasswordField: React.FC<Props> = ({
 	const regexLength = /.{8,}/;
 
 	const handleChange = (value: string) => {
-		setHasError(validatePassword(value)); // Validate password on change
+		setHasError(validatePassword(value)); 
 		onChange(value);
 	};
 
 	const handleBlur = (e: ChangeEvent<HTMLInputElement>) => {
-		setHasError(validatePassword(e.target.value)); // Validate password on blur
+		setHasError(validatePassword(e.target.value));
 	};
 
 	const handleFocus = (e: ChangeEvent<HTMLInputElement>) => {
 		if (isError) {
-			setHasError(false); // Reset error state if the field is focused again
+			setHasError(false); 
 		}
 	};
 
 	const togglePasswordVisibility = () => {
-		setShowPassword((prevState) => !prevState); // Toggle the password visibility
+		setShowPassword((prevState) => !prevState); 
 	};
 
 	// Validate password based on regex conditions

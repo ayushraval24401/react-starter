@@ -1,12 +1,12 @@
 import React, { ChangeEvent, useState } from 'react';
 import { Input, Typography, Button } from 'antd';
 import { SizeType } from 'antd/es/config-provider/SizeContext';
-import { invalidText } from 'utils/utils'; // Assuming you have some utility for validation
+import { invalidText } from 'utils/utils';
 
 type Props = {
 	name: string;
 	label: string;
-	value: string | number;  
+	value: string | number;
 	placeholder?: string;
 	required?: boolean;
 	isError?: boolean;
@@ -25,7 +25,7 @@ type Props = {
 	isViewOnly?: boolean;
 	onBlur?: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 	onFocus?: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-	isPassword?: boolean; // New prop to indicate if it's a password field
+	isPassword?: boolean; 
 };
 
 const InputField: React.FC<Props> = ({

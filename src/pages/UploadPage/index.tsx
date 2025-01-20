@@ -3,11 +3,6 @@ import { Button, message } from 'antd';
 import type { UploadFile } from 'antd/es/upload/interface';
 import GlobalUpload from 'components/FileUpload';
 
-interface FormData {
-	files: File[];
-	// other form fields if needed
-}
-
 const UploadPage: React.FC = () => {
 	const [fileList, setFileList] = useState<UploadFile[]>([]);
 	const [isSubmitting, setIsSubmitting] = useState(false);
@@ -21,7 +16,6 @@ const UploadPage: React.FC = () => {
 		try {
 			setIsSubmitting(true);
 
-			// Convert UploadFile[] to File[]
 			const files = fileList.map((file) => file.originFileObj);
 
 			if (files.length === 0) {
@@ -36,14 +30,9 @@ const UploadPage: React.FC = () => {
 				}
 			});
 
-			// Here you can send the formData to your backend
 			console.log('Files ready to be sent:', files);
-
-			// Example API call (commented out)
-			// const response = await axios.post('/api/upload', formData);
-
 			message.success('Files processed successfully!');
-			setFileList([]); // Clear files after successful upload
+			setFileList([]);
 		} catch (error) {
 			const errorMessage =
 				error instanceof Error

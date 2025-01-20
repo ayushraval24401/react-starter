@@ -27,8 +27,6 @@ interface ThemeContextType {
 	currentTheme: ThemeColors;
 }
 
-// context/ThemeContext.tsx
-
 const ThemeContext = createContext<ThemeContextType>({
 	isDarkMode: false,
 	toggleTheme: () => {},
@@ -40,7 +38,6 @@ export const useTheme = () => useContext(ThemeContext);
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 	children,
 }) => {
-	// Initialize theme from localStorage with error handling
 	const [isDarkMode, setIsDarkMode] = useState(() => {
 		try {
 			const saved = localStorage.getItem('themeMode');
@@ -52,18 +49,15 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 		}
 	});
 
-	// Memoize current theme to prevent unnecessary recalculations
 	const currentTheme = React.useMemo(
 		() => (isDarkMode ? darkTheme : lightTheme),
 		[isDarkMode]
 	);
 
-	// Memoize theme toggle function
 	const toggleTheme = useCallback(() => {
 		setIsDarkMode((prev: boolean) => !prev);
 	}, []);
 
-	// Effect for system theme changes
 	useEffect(() => {
 		const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
@@ -75,7 +69,6 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 		return () => mediaQuery.removeEventListener('change', handleChange);
 	}, []);
 
-	// Effect for theme persistence and body class
 	useEffect(() => {
 		try {
 			localStorage.setItem('themeMode', JSON.stringify(isDarkMode));
@@ -85,13 +78,11 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 
 		document.body.className = isDarkMode ? 'dark' : 'light';
 
-		// Optional: Add CSS variables for non-Ant Design components
 		Object.entries(currentTheme).forEach(([key, value]) => {
 			document.documentElement.style.setProperty(`--${key}`, value);
 		});
 	}, [isDarkMode, currentTheme]);
 
-	// Memoize ConfigProvider theme config
 	const themeConfig = React.useMemo(
 		() => ({
 			algorithm: isDarkMode

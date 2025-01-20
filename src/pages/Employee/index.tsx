@@ -2,7 +2,9 @@
 import { Button, Space, Tag } from 'antd';
 import { TablePaginationConfig } from 'antd/es/table';
 import { FilterValue, SorterResult } from 'antd/es/table/interface';
+import TabPane from 'antd/es/tabs/TabPane';
 import GlobalTable from 'components/Table';
+import GlobalTabs from 'components/Tabs';
 import React, { useState } from 'react';
 
 const ExamplePage = () => {
@@ -118,46 +120,100 @@ const ExamplePage = () => {
 
 	return (
 		<>
-			<GlobalTable
-				// Data
-				data={tableData}
-				columns={columns}
-				loading={false}
-				// Pagination
-				pagination={true}
-				currentPage={currentPage}
-				pageSize={pageSize}
-				totalRecords={totalRecords}
-				showSizeChanger={false}
-				// Selection
-				// rowSelection={true}
-				selectedRowKeys={selectedRowKeys}
-				onSelectChange={handleSelectChange}
-				// Display
-				size="middle"
-				bordered={true}
-				showTotalRecords={true}
-				tableLayout="fixed"
-				// Scroll
-				scroll={{ x: '100%', y: 500 }}
-				// Style
-				sticky={true}
-				rowClassName={(record) =>
-					record.status === 'active' ? 'active' : ''
-				}
-				// Custom Components
-				title={() => <h3>User Management Table</h3>}
-				// Expandable
-				// expandable={{
-				// 	expandedRowRender,
-				// 	expandRowByClick: true,
-				// }}
-				// Event Handlers
-				onTableChange={handleTableChange}
-				onRow={(record) => ({
-					onClick: () => console.log('Row clicked:', record),
-				})}
-			/>
+			<div
+				style={{
+					maxHeight: 'calc(100vh - 200px)',
+				}}
+			>
+				<GlobalTabs defaultActiveKey="1">
+					<TabPane tab="Tab 1" key="1">
+						<GlobalTable
+							// Data
+							data={tableData}
+							columns={columns}
+							loading={false}
+							// Pagination
+							pagination={true}
+							currentPage={currentPage}
+							pageSize={pageSize}
+							totalRecords={totalRecords}
+							showSizeChanger={false}
+							// Selection
+							// rowSelection={true}
+							selectedRowKeys={selectedRowKeys}
+							onSelectChange={handleSelectChange}
+							// Display
+							size="middle"
+							bordered={true}
+							showTotalRecords={true}
+							tableLayout="fixed"
+							// Scroll
+							scroll={{ x: '100%', y: 450 }}
+							// Style
+							sticky={true}
+							rowClassName={(record) =>
+								record.status === 'active' ? 'active' : ''
+							}
+							// Custom Components
+							// title={() => <h3>User Management Table</h3>}
+							// Expandable
+							// expandable={{
+							// 	expandedRowRender,
+							// 	expandRowByClick: true,
+							// }}
+							// Event Handlers
+							onTableChange={handleTableChange}
+							onRow={(record) => ({
+								onClick: () =>
+									console.log('Row clicked:', record),
+							})}
+						/>
+					</TabPane>
+					<TabPane tab="Tab 2" key="2">
+						<GlobalTable
+							// Data
+							data={tableData}
+							columns={columns}
+							loading={false}
+							// Pagination
+							pagination={true}
+							currentPage={currentPage}
+							pageSize={pageSize}
+							totalRecords={totalRecords}
+							showSizeChanger={false}
+							// Selection
+							// rowSelection={true}
+							selectedRowKeys={selectedRowKeys}
+							onSelectChange={handleSelectChange}
+							// Display
+							size="middle"
+							bordered={true}
+							showTotalRecords={true}
+							tableLayout="fixed"
+							// Scroll
+							scroll={{ x: '100%', y: 450 }}
+							// Style
+							sticky={true}
+							rowClassName={(record) =>
+								record.status === 'active' ? 'active' : ''
+							}
+							// Custom Components
+							// title={() => <h3>User Management Table</h3>}
+							// Expandable
+							// expandable={{
+							// 	expandedRowRender,
+							// 	expandRowByClick: true,
+							// }}
+							// Event Handlers
+							onTableChange={handleTableChange}
+							onRow={(record) => ({
+								onClick: () =>
+									console.log('Row clicked:', record),
+							})}
+						/>
+					</TabPane>
+				</GlobalTabs>
+			</div>
 		</>
 	);
 };

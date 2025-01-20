@@ -1,6 +1,5 @@
-import React from 'react';
 import { Select } from 'antd';
-import { SelectProps } from 'antd/es/select';
+import React from 'react';
 
 type SelectDropdownProps = {
 	value: string | number | undefined;
