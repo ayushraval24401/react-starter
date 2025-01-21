@@ -68,12 +68,8 @@ const DatePickerField: React.FC<Props> = ({
 		<div className="input-field" style={style}>
 			{/* Label */}
 			{label && (
-				<p
-					className="label"
-					style={{ marginBottom: isViewOnly ? '5px' : '' }}
-				>
-					{label}
-					{required && !isViewOnly && <span className="red">*</span>}
+				<p className="input-label">
+					{label} {required && <span className="red">*</span>}
 				</p>
 			)}
 
@@ -105,14 +101,7 @@ const DatePickerField: React.FC<Props> = ({
 					/>
 
 					{/* Error Message */}
-					{isError && (
-						<p
-							className="red"
-							style={{ fontSize: '12px', marginLeft: '2px' }}
-						>
-							{helperText}
-						</p>
-					)}
+					{isError && <p className="input-error">{helperText}</p>}
 				</div>
 			)}
 		</div>

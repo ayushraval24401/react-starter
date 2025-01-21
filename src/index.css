@@ -48,6 +48,18 @@ body {
 .red {
 	color: red;
 }
-.mb-20{
-	margin-bottom: 20px;
+.mb-10 {
+	margin-bottom: 10px;
+}
+
+.input-error {
+	color: red;
+	font-size: 12px;
+	margin: 4px 0px;
+}
+.input-label {
+	font-size: 1.5rem;
+	font-weight: 600;
+	margin-right: 6px;
+	margin-bottom: 8px;
 }

@@ -38,7 +38,7 @@ const PasswordField: React.FC<Props> = ({
 	width,
 }) => {
 	const [hasError, setHasError] = useState(false);
-	const [showPassword, setShowPassword] = useState(false); 
+	const [showPassword, setShowPassword] = useState(false);
 
 	// Regular expressions for password validation
 	const regexLowercase = /[a-z]/;
@@ -48,7 +48,7 @@ const PasswordField: React.FC<Props> = ({
 	const regexLength = /.{8,}/;
 
 	const handleChange = (value: string) => {
-		setHasError(validatePassword(value)); 
+		setHasError(validatePassword(value));
 		onChange(value);
 	};
 
@@ -58,12 +58,12 @@ const PasswordField: React.FC<Props> = ({
 
 	const handleFocus = (e: ChangeEvent<HTMLInputElement>) => {
 		if (isError) {
-			setHasError(false); 
+			setHasError(false);
 		}
 	};
 
 	const togglePasswordVisibility = () => {
-		setShowPassword((prevState) => !prevState); 
+		setShowPassword((prevState) => !prevState);
 	};
 
 	// Validate password based on regex conditions
@@ -80,7 +80,7 @@ const PasswordField: React.FC<Props> = ({
 	return (
 		<div className="input-field">
 			{showLabel && label && (
-				<p style={{ marginBottom: '5px' }}>
+				<p style={{ marginBottom: '5px' }} className="input-label">
 					{label}{' '}
 					{required && <span style={{ color: 'red' }}>*</span>}
 				</p>
@@ -120,18 +120,10 @@ const PasswordField: React.FC<Props> = ({
 			</div>
 
 			{(isError || hasError) && (
-				<p
-					style={{
-						color: 'red',
-						fontSize: '12px',
-						marginLeft: '2px',
-					}}
-				>
-					{helperText}
-				</p>
+				<p className="input-error">{helperText}</p>
 			)}
 
-			<div style={{ marginTop: '8px', fontSize: '12px', color: '#888' }}>
+			{/* <div style={{ marginTop: '8px', fontSize: '12px', color: '#888' }}>
 				<Typography.Text type={hasError ? 'danger' : undefined}>
 					Password must contain:
 				</Typography.Text>
@@ -174,7 +166,7 @@ const PasswordField: React.FC<Props> = ({
 						At least 8 characters
 					</li>
 				</ul>
-			</div>
+			</div> */}
 		</div>
 	);
 };

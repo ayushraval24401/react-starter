@@ -16,32 +16,91 @@ import {
 import { FC, useState } from 'react';
 import styles from './sidebar.module.scss';
 import InputNumberField from 'components/Form/InputNumberField';
+import { hasFormError, validateFormData } from 'utils/utils';
 
 type SideDrawerBodyProps = {
 	closeDrawerByAnimation?: any;
 };
 
+const dropDownOptions = [
+	{ value: '', label: 'Select an option' },
+	{ value: 'option1', label: 'Option 1' },
+	{ value: 'option2', label: 'Option 2' },
+	{ value: 'option3', label: 'Option 3' },
+];
+
+interface FormData {
+	birthDate: string;
+	dateRange: [string, string];
+	firstName: string;
+	selectOption: string;
+	email: string;
+	multipleOptions: string[];
+	ssn: string;
+	price: number | null;
+	profileImages: UploadFile[];
+	description: string;
+}
+
+interface FormErrors {
+	birthDate: boolean;
+	dateRange: boolean;
+	firstName: boolean;
+	selectOption: boolean;
+	email: boolean;
+	multipleOptions: boolean;
+	ssn: boolean;
+	price: boolean;
+	profileImages: boolean;
+	description: boolean;
+}
+
 const AddEmployee: FC<SideDrawerBodyProps> = (props) => {
 	const [loading, setLoading] = useState<boolean>(false);
 	const [isSsnVisible, setIsSsnVisible] = useState<boolean>(false);
-	const [value, setValue] = useState<string>('');
 	const [fileList, setFileList] = useState<UploadFile[]>([]);
 
-	const handleChange = (newValue: string) => {
-		setValue(newValue);
+	// Form data state
+	const [formData, setFormData] = useState<FormData>({
+		birthDate: '',
+		dateRange: ['2024-01-01', '2024-01-10'],
+		firstName: '',
+		selectOption: '',
+		email: '',
+		multipleOptions: [''],
+		ssn: '',
+		price: null,
+		profileImages: [],
+		description: '',
+	});
+
+	const [formErrors, setFormErrors] = useState<FormErrors>({
+		birthDate: false,
+		dateRange: false,
+		firstName: false,
+		selectOption: false,
+		email: false,
+		multipleOptions: false,
+		ssn: false,
+		price: false,
+		profileImages: false,
+		description: false,
+	});
+
+	// Generic change handler
+	const handleChange = (name: keyof FormData, value: any) => {
+		setFormData((prev) => ({
+			...prev,
+			[name]: value,
+		}));
+
+		setFormErrors((prev) => ({
+			...prev,
+			[name]: false,
+		}));
 	};
 
-	const handleBlur = (
-		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-	) => {
-		console.log('Input blurred:', e.target.value);
-	};
-
-	const handleFocus = (
-		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-	) => {
-		console.log('Input focused:', e.target.value);
-	};
+	// Generic blur handler
 	const { closeDrawerByAnimation } = props;
 
 	const buttons: ButtonInterface[] = [
@@ -69,48 +128,81 @@ const AddEmployee: FC<SideDrawerBodyProps> = (props) => {
 			minHeight: '4rem',
 			disabled: false,
 			variant: 'primary',
-			onClick: () => {},
+			onClick: () => {
+				handleSubmit();
+			},
 		},
 	];
+	const handleSubmit = () => {
+		let checkFormError = validateFormData(
+			{
+				birthDate: formData.birthDate,
+				firstName: formData.firstName,
+				selectOption: formData.selectOption,
+				email: formData.email,
+				multipleOptions: formData.multipleOptions,
+				ssn: formData.ssn,
+				price: formData.price,
+				profileImages: formData.profileImages,
+				description: formData.description,
+			},
+			{ ...formErrors }
+		);
+		if (formData.profileImages.length === 0) {
+			checkFormError.profileImages = true;
+		}
+		setFormErrors(checkFormError as unknown as FormErrors);
+
+		const hasError = hasFormError(checkFormError);
+		console.log('hasError: ', hasError);
+	};
 
 	return (
 		<>
 			<div className={styles['side-drawer-form']}>
-				<Row gutter={16} className="mb-20">
+				<Row gutter={16} className="mb-10">
 					<Col span={12}>
 						<CustomDatePicker
-							onChange={() => {}}
-							value={''}
+							onChange={(value) =>
+								handleChange('birthDate', value)
+							}
+							value={formData.birthDate}
 							picker="date"
 							required
 							placeholder="Select Date"
 							name="birthDate"
 							label="Birth Date"
+							helperText={'Please select a date'}
+							isError={!!formErrors.birthDate}
 						/>
 					</Col>
 					<Col span={12}>
 						<DateRangePickerField
 							name="dateRange"
 							label="Select Date Range"
-							value={['2024-01-01', '2024-01-10']}
+							value={formData.dateRange}
 							onChange={(dates) =>
-								console.log('Selected range:', dates)
+								handleChange('dateRange', dates)
 							}
 							disabledBeforeDates="2024-01-01"
 							disabledAfterDates="2024-12-31"
 						/>
 					</Col>
 				</Row>
-				<Row gutter={16} className="mb-20">
+				<Row gutter={16} className="mb-10">
 					<Col span={12}>
 						<InputField
 							label="First Name"
 							placeholder="Enter First Name"
 							type="text"
-							onChange={() => {}}
-							value=""
+							onChange={(value: string) => {
+								return handleChange('firstName', value);
+							}}
+							value={formData.firstName}
 							name="firstName"
 							required
+							isError={!!formErrors.firstName}
+							helperText={'Please enter a first name'}
 							style={{
 								minHeight: '4rem',
 							}}
@@ -118,13 +210,15 @@ const AddEmployee: FC<SideDrawerBodyProps> = (props) => {
 					</Col>
 					<Col span={12}>
 						<SingleSelectDropdown
-							value="option1"
-							options={[{ value: 'option1', label: 'Option 1' }]}
-							onChange={(value) => console.log(value)}
+							value={formData.selectOption}
+							options={dropDownOptions}
+							onChange={(value) =>
+								handleChange('selectOption', value)
+							}
 							placeholder="Select an option"
 							required={true}
-							helperText="Please select an option"
-							isError={false}
+							helperText={'Please select an option'}
+							isError={!!formErrors.selectOption}
 							label="Select Option"
 							style={{
 								minHeight: '4rem',
@@ -132,16 +226,20 @@ const AddEmployee: FC<SideDrawerBodyProps> = (props) => {
 						/>
 					</Col>
 				</Row>
-				<Row gutter={16} className="mb-20">
+				<Row gutter={16} className="mb-10">
 					<Col span={12}>
 						<InputField
 							label="Email"
 							placeholder="Enter Email"
 							type="email"
-							onChange={() => {}}
-							value=""
+							onChange={(value: string) =>
+								handleChange('email', value)
+							}
+							value={formData.email}
 							name="email"
 							required
+							isError={!!formErrors.email}
+							helperText={'Please enter a valid email'}
 							style={{
 								minHeight: '4rem',
 							}}
@@ -149,14 +247,16 @@ const AddEmployee: FC<SideDrawerBodyProps> = (props) => {
 					</Col>
 					<Col span={12}>
 						<MultiSelectDropdown
-							value="option1"
-							options={[{ value: 'option1', label: 'Option 1' }]}
-							onChange={(value) => console.log(value)}
+							value={formData.multipleOptions}
+							options={dropDownOptions}
+							onChange={(value) =>
+								handleChange('multipleOptions', value)
+							}
 							placeholder="Select an option"
 							required={true}
-							helperText="Please select an option"
-							isError={false}
-							label="Select multiple  Option"
+							helperText={'Please select an option'}
+							isError={!!formErrors.multipleOptions}
+							label="Select multiple Option"
 							mode="multiple"
 							style={{
 								minHeight: '4rem',
@@ -164,19 +264,20 @@ const AddEmployee: FC<SideDrawerBodyProps> = (props) => {
 						/>
 					</Col>
 				</Row>
-				<Row gutter={16} className="mb-20">
+				<Row gutter={16} className="mb-10">
 					<Col span={12}>
 						<InputField
 							name="ssn"
 							label="Enter a ssn number"
-							value={value}
+							value={formData.ssn}
 							placeholder="123456789"
 							required
-							isError={false}
-							onChange={handleChange}
-							helperText="Must be a 9-digit number"
-							regex="^\d{9}$" // Regex for exactly 9-digit numbers
-							// prefix={<span>🔢</span>}
+							isError={!!formErrors.ssn}
+							onChange={(value: string) =>
+								handleChange('ssn', value)
+							}
+							helperText={'Must be a 9-digit number'}
+							regex="^\d{9}$"
 							suffix={
 								<span
 									onClick={() =>
@@ -198,8 +299,6 @@ const AddEmployee: FC<SideDrawerBodyProps> = (props) => {
 							showLabel
 							style={{ width: '100%' }}
 							width="100%"
-							onBlur={handleBlur}
-							onFocus={handleFocus}
 							isPassword={!isSsnVisible}
 						/>
 					</Col>
@@ -207,50 +306,58 @@ const AddEmployee: FC<SideDrawerBodyProps> = (props) => {
 						<InputNumberField
 							name="price"
 							label="Price"
-							value={0}
-							onChange={() => {}}
+							value={formData.price}
+							onChange={(value) => handleChange('price', value)}
 							placeholder="0.00"
 							suffix={<DollarOutlined />}
 							allowLeadingZero
 							required
+							isError={!!formErrors.price}
+							helperText={'Please enter a valid price'}
 						/>
 					</Col>
 				</Row>
-				<Row className="mb-20">
+				<Row className="mb-10">
 					<Col span={24}>
 						<GlobalUpload
 							label="Profile Images"
-							required={true} // Indicates this field is mandatory
+							required={true}
 							fileList={fileList}
-							setFileList={setFileList}
+							setFileList={(files: any) => {
+								setFileList(files);
+								handleChange('profileImages', files);
+							}}
 							acceptedTypes={[
 								'image/png',
 								'image/jpeg',
 								'image/jpg',
 							]}
-							maxFileSize={5} // Maximum file size in MB
-							multiple={true} // Allow multiple files
-							maxFiles={1} // Limit to 5 files
+							maxFileSize={5}
+							multiple={true}
+							maxFiles={1}
 							className="custom-upload-style"
+							isError={!!formErrors.profileImages}
 						/>
 					</Col>
 				</Row>
-				<Row className="mb-20">
+				<Row className="mb-10">
 					<Col span={24}>
 						<InputField
 							name="description"
 							label="Description"
-							value={'textValue'}
-							onChange={() => {}}
+							value={formData.description}
+							onChange={(value: string) =>
+								handleChange('description', value)
+							}
 							placeholder="Enter a description"
 							required={true}
-							isError={false}
-							helperText="This field is required"
-							rows={4} // Use rows prop to specify the number of rows for TextArea
+							isError={!!formErrors.description}
+							helperText={'Please enter a description'}
+							rows={4}
 						/>
 					</Col>
 				</Row>
-				<Row className="mb-20">
+				<Row className="mb-10">
 					<Buttons buttons={buttons} />
 				</Row>
 			</div>

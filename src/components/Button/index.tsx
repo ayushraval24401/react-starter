@@ -42,7 +42,7 @@ const Buttons: React.FC<Prop> = ({
 				const variantStyles = {
 					primary: {
 						backgroundColor: currentTheme.primaryColor,
-						color: currentTheme.textColor,
+						color: currentTheme.btnTextColor,
 					},
 					secondary: {
 						backgroundColor: currentTheme.secondaryColor,

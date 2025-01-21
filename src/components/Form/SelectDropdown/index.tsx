@@ -73,7 +73,7 @@ const SingleSelectDropdown = (props: SingleSelectProps) => {
 			<div style={{ ...style }}>
 				{label && (
 					<p
-						className="label"
+						className="input-label"
 						style={{
 							marginRight: '4px',
 							marginBottom: `${isViewOnly ? '5px' : ''}`,
@@ -107,12 +107,7 @@ const SingleSelectDropdown = (props: SingleSelectProps) => {
 					loading={loading}
 				/>
 				{(hasError || isError) && (
-					<p
-						className="red"
-						style={{ fontSize: '12px', marginLeft: '2px' }}
-					>
-						{helperText}
-					</p>
+					<p className="input-error">{helperText}</p>
 				)}
 			</div>
 		</div>
@@ -161,7 +156,7 @@ const MultiSelectDropdown = (props: MultiSelectProps) => {
 			<div>
 				{label && (
 					<p
-						className="label"
+						className="input-label"
 						style={{
 							marginRight: '4px',
 							marginBottom: `${isViewOnly ? '5px' : ''}`,
@@ -197,12 +192,7 @@ const MultiSelectDropdown = (props: MultiSelectProps) => {
 					loading={loading}
 				/>
 				{(hasError || isError) && (
-					<p
-						className="red"
-						style={{ fontSize: '12px', marginLeft: '2px' }}
-					>
-						{helperText}
-					</p>
+					<p className="input-error">{helperText}</p>
 				)}
 			</div>
 		</div>

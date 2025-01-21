@@ -14,11 +14,15 @@ import './index.scss';
 
 const { Sider } = Layout;
 
-const Sidebar: React.FC = () => {
-	const [collapsed, setCollapsed] = useState(false);
-	const navigate = useNavigate(); // Initialize useNavigate
+type SidebarProps = {
+	collapsed: boolean;
+	setCollapsed: (collapsed: boolean) => void;
+	toggleCollapse: any;
+};
 
-	const toggleCollapse = () => setCollapsed(!collapsed);
+const Sidebar = (props: SidebarProps) => {
+	const { collapsed, setCollapsed, toggleCollapse } = props;
+	const navigate = useNavigate(); // Initialize useNavigate
 
 	// Menu item click handler
 	const handleMenuClick = ({ key }: { key: string }) => {

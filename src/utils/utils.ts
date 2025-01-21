@@ -1321,6 +1321,7 @@ export const convertArrayToCSV = (data: any) => {
 export const lightTheme = {
 	primaryColor: '#584495', // Main brand color
 	secondaryColor: '#ffffff', // Background
+	btnTextColor: '#ffffff', // Button text color
 	textColor: '#000000', // Primary text color
 	textSecondary: '#6e6e6e', // Secondary text color
 	borderColor: '#e8e8e8', // Border color
@@ -1336,6 +1337,7 @@ export const darkTheme = {
 	primaryColor: '#7a65c8', // Slightly lighter for better contrast
 	secondaryColor: '#141414', // Dark background
 	textColor: '#ffffff', // Primary text color
+	btnTextColor: '#ffffff', // Button text color
 	textSecondary: '#a6a6a6', // Secondary text color
 	borderColor: '#303030', // Border color
 	hoverColor: '#2d2d2d', // Hover background

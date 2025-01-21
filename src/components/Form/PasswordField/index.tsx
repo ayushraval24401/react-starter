@@ -98,7 +98,7 @@ const PasswordField: React.FC<Props> = ({
 	return (
 		<div className="input-field">
 			{showLabel && label && (
-				<p style={{ marginBottom: '5px' }}>
+				<p style={{ marginBottom: '5px' }} className='input-label'>
 					{label}{' '}
 					{required && <span style={{ color: 'red' }}>*</span>}
 				</p>

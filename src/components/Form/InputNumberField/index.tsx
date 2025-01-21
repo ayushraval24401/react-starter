@@ -6,7 +6,7 @@ import { invalidText } from 'utils/utils';
 interface InputNumberFieldProps {
 	name: string;
 	label?: string;
-	value?: number;
+	value?: number | null;
 	placeholder?: string;
 	required?: boolean;
 	isError?: boolean;
@@ -19,6 +19,7 @@ interface InputNumberFieldProps {
 	size?: SizeType;
 	style?: React.CSSProperties;
 	allowLeadingZero?: boolean;
+	onBlur?: any;
 }
 
 const InputNumberField = ({
@@ -36,6 +37,7 @@ const InputNumberField = ({
 	disabled = false,
 	size = 'large',
 	style,
+	onBlur,
 	allowLeadingZero = false,
 }: InputNumberFieldProps) => {
 	const [hasError, setHasError] = useState(false);
@@ -83,6 +85,10 @@ const InputNumberField = ({
 			const numericValue = inputValue ? Number(inputValue) : null;
 			const isValid = validateInput(numericValue, inputValue);
 			setHasError(!isValid);
+
+			if (onBlur) {
+				onBlur(e);
+			}
 		},
 		[validateInput]
 	);
@@ -105,7 +111,7 @@ const InputNumberField = ({
 	return (
 		<div className="input-field">
 			{label && (
-				<p className="label">
+				<p className="input-label">
 					{label} {required && <span className="red">*</span>}
 				</p>
 			)}
@@ -115,15 +121,7 @@ const InputNumberField = ({
 					{...(allowLeadingZero ? { stringMode: true } : { min: 0 })}
 				/>
 				{(isError || hasError) && (
-					<p
-						className="red"
-						style={{
-							fontSize: '12px',
-							marginLeft: '2px',
-						}}
-					>
-						{errorMessage}
-					</p>
+					<p className="input-error">{errorMessage}</p>
 				)}
 			</div>
 		</div>

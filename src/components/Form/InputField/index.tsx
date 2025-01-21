@@ -114,7 +114,10 @@ const InputField: React.FC<Props> = ({
 	return (
 		<div className="input-field">
 			{showLabel && label && (
-				<p style={{ marginBottom: isViewOnly ? '5px' : '' }}>
+				<p
+					style={{ marginBottom: isViewOnly ? '5px' : '' }}
+					className="input-label"
+				>
 					{iconInLabel && (prefix || suffix) && (
 						<span style={{ marginRight: '5px' }}>
 							{prefix || suffix}
@@ -179,13 +182,7 @@ const InputField: React.FC<Props> = ({
 					)}
 
 					{(isError || hasError) && (
-						<p
-							style={{
-								color: 'red',
-								fontSize: '12px',
-								marginLeft: '2px',
-							}}
-						>
+						<p className="input-error">
 							{errorMessage || helperText}
 						</p>
 					)}

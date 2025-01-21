@@ -19,6 +19,7 @@ export interface ThemeColors {
 	cardBg: string;
 	linkColor: string;
 	linkHover: string;
+	btnTextColor: string;
 }
 
 interface ThemeContextType {

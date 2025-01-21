@@ -77,7 +77,7 @@ const DateRangePickerField: React.FC<Props> = ({
 	return (
 		<div className="input-field">
 			{label && (
-				<p className="label">
+				<p className="input-label">
 					{label} {required && <span className="red">*</span>}
 				</p>
 			)}
@@ -109,14 +109,7 @@ const DateRangePickerField: React.FC<Props> = ({
 				}}
 				size="large"
 			/>
-			{isError && (
-				<p
-					className="red"
-					style={{ fontSize: '12px', marginLeft: '2px' }}
-				>
-					{helperText}
-				</p>
-			)}
+			{isError && <p className="input-error">{helperText}</p>}
 		</div>
 	);
 };

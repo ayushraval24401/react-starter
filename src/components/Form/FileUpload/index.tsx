@@ -16,6 +16,7 @@ export interface GlobalUploadProps {
 	disabled?: boolean;
 	maxFiles?: number;
 	className?: string;
+	isError?: boolean;
 	onError?: (error: string) => void;
 }
 
@@ -30,6 +31,7 @@ const GlobalUpload: React.FC<GlobalUploadProps> = ({
 	disabled = false,
 	maxFiles = 10,
 	className,
+	isError,
 	onError,
 }) => {
 	const handleBeforeUpload = (file: RcFile) => {
@@ -122,7 +124,7 @@ const GlobalUpload: React.FC<GlobalUploadProps> = ({
 		<div className={className}>
 			{/* Display the label */}
 			{label && (
-				<p style={{ marginBottom: '8px' }}>
+				<p className="input-label">
 					{label}{' '}
 					{required && <span style={{ color: 'red' }}>*</span>}
 				</p>
@@ -158,6 +160,7 @@ const GlobalUpload: React.FC<GlobalUploadProps> = ({
 					</p>
 				)}
 			</Dragger>
+			{isError && <p className="input-error">Please upload a file</p>}
 		</div>
 	);
 };
