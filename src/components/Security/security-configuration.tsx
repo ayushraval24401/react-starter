@@ -1,4 +1,4 @@
-import MainLayout from 'layouts/mainLayout';
+import MainLayout from 'layouts/MainLayout';
 import { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
@@ -72,9 +72,7 @@ export default function SecurityConfiguration() {
 		return (
 			<>
 				{/* {isOnAuthorizedPath ? ( */}
-				<MainLayout>
-					<Outlet />
-				</MainLayout>
+				<Outlet />
 				{/* ) : (
 					<Outlet />
 				)} */}

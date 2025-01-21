@@ -1,0 +1,47 @@
+// src/layouts/SettingsLayout/index.module.scss
+.settingsModal {
+  :global(.ant-modal-content) {
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+  }
+}
+
+.layout {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+
+  :global(.ant-layout-sider) {
+    height: 100vh;
+    overflow-y: auto;
+  }
+}
+
+.mainContent {
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+  background: var(--background-color, #f0f2f5);
+}
+
+// Additional modal-specific styles
+:global {
+  .ant-modal {
+    max-width: 100vw !important;
+    top: 0 !important;
+    padding: 0;
+    margin: 0;
+  }
+
+  .ant-modal-content {
+    border-radius: 0;
+  }
+}

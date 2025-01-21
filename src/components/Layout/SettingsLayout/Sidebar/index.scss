@@ -1,0 +1,28 @@
+/* Sidebar.scss */
+@import '../../../../styles/global/variables.scss';
+
+/* Global styles for Ant Design menu */
+.ant-menu-item {
+	color: $text-color; /* Default text color for menu items */
+
+	&:hover {
+		color: $primary-color; /* Hover text color */
+	}
+
+	&.ant-menu-item-selected {
+		background-color: $primary-color !important; /* Background for selected item */
+		color: $white !important; /* Text color for selected item */
+	}
+}
+
+/* Trigger customization */
+.ant-layout-sider-trigger {
+	background-color: $sidebar-bg; /* Match Sidebar background */
+	border-top: 1px solid $border-color; /* Divider line */
+	color: $text-color;
+
+	&:hover {
+		color: $primary-color;
+		background-color: $hover-color;
+	}
+}

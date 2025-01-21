@@ -8,7 +8,7 @@ import {
 } from '@ant-design/icons';
 import { Image, Layout, Menu } from 'antd';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 import styles from './index.module.scss';
 import './index.scss';
 
@@ -16,21 +16,19 @@ const { Sider } = Layout;
 
 const Sidebar: React.FC = () => {
 	const [collapsed, setCollapsed] = useState(false);
-	const navigate = useNavigate(); // Initialize useNavigate
+
+	const navigate = useNavigate();
 
 	const toggleCollapse = () => setCollapsed(!collapsed);
 
-	// Menu item click handler
 	const handleMenuClick = ({ key }: { key: string }) => {
-		// Map the menu keys to their respective routes
 		const routes: { [n: string]: string } = {
-			// '1': '/dashboard',
+			'1': '/dashboard',
 			'2': '/employee',
-			// '3': '/time-activities',
-			// '4': '/payroll',
-			// '5': '/reports',
+			'3': '/time-activities',
+			'4': '/payroll',
+			'5': '/reports',
 		};
-		// Navigate to the appropriate route
 		navigate(routes[key]);
 	};
 
@@ -43,7 +41,6 @@ const Sidebar: React.FC = () => {
 			width={200}
 			trigger={null}
 		>
-			{/* Logo and Trigger Section */}
 			<div
 				className={styles.logoContainer}
 				onClick={collapsed ? toggleCollapse : undefined}
@@ -75,29 +72,30 @@ const Sidebar: React.FC = () => {
 				)}
 			</div>
 
-			{/* Menu Section */}
-			<Menu
-				mode="inline"
-				defaultSelectedKeys={['1']}
-				className={styles.menu}
-				onClick={handleMenuClick} // Add click handler
-			>
-				<Menu.Item key="1" icon={<DashboardOutlined />}>
-					Dashboard
-				</Menu.Item>
-				<Menu.Item key="2" icon={<UserOutlined />}>
-					Employees
-				</Menu.Item>
-				<Menu.Item key="3" icon={<ClockCircleOutlined />}>
-					Time Activities
-				</Menu.Item>
-				<Menu.Item key="4" icon={<WalletOutlined />}>
-					Payroll
-				</Menu.Item>
-				<Menu.Item key="5" icon={<BarChartOutlined />}>
-					Reports
-				</Menu.Item>
-			</Menu>
+			<div className={styles.menuContainer}>
+				<Menu
+					mode="inline"
+					defaultSelectedKeys={['1']}
+					className={styles.menu}
+					onClick={handleMenuClick}
+				>
+					<Menu.Item key="1" icon={<DashboardOutlined />}>
+						Dashboard
+					</Menu.Item>
+					<Menu.Item key="2" icon={<UserOutlined />}>
+						Employees
+					</Menu.Item>
+					<Menu.Item key="3" icon={<ClockCircleOutlined />}>
+						Time Activities
+					</Menu.Item>
+					<Menu.Item key="4" icon={<WalletOutlined />}>
+						Payroll
+					</Menu.Item>
+					<Menu.Item key="5" icon={<BarChartOutlined />}>
+						Reports
+					</Menu.Item>
+				</Menu>
+			</div>
 		</Sider>
 	);
 };

@@ -1,33 +1,56 @@
 import React from 'react';
-import { Modal } from 'antd';
-import styles from './index.module.scss';
+import { Modal as AntdModal, Button } from 'antd';
+import { ModalProps } from 'antd/es/modal';
+import classNames from 'classnames';
+import './GlobalModal.scss';
 
-interface GlobalModalProps {
-	isOpen: boolean;
-	onClose: () => void;
-	title?: string;
-	children: React.ReactNode;
-	footer?: React.ReactNode | null;
+interface GlobalModalProps extends ModalProps {
+	fullscreen?: boolean; // Custom prop for fullscreen mode
+	onSubmit?: () => void; // Submit button handler
+	submitText?: string; // Custom text for submit button
+	cancelText?: string; // Custom text for cancel button
 }
 
 const GlobalModal: React.FC<GlobalModalProps> = ({
-	isOpen,
-	onClose,
+	fullscreen = false,
+	className,
 	title,
 	children,
-	footer = null,
+	onSubmit,
+	onCancel,
+	submitText = 'Submit',
+	cancelText = 'Cancel',
+	...props
 }) => {
 	return (
-		<Modal
-			open={isOpen}
-			onCancel={onClose}
-			title={title}
-			footer={footer}
-			className={styles.globalModal}
+		<AntdModal
+			{...props}
+			className={classNames('global-modal', className, {
+				'global-modal--fullscreen': fullscreen,
+			})}
 			centered
+			footer={null} // Custom footer is implemented below
 		>
-			{children}
-		</Modal>
+			<div className="global-modal__header">
+				<h2>{title}</h2>
+			</div>
+			<div className="global-modal__body">{children}</div>
+			<div className="global-modal__footer">
+				<Button
+					onClick={onCancel}
+					className="global-modal__cancel-button"
+				>
+					{cancelText}
+				</Button>
+				<Button
+					type="primary"
+					onClick={onSubmit}
+					className="global-modal__submit-button"
+				>
+					{submitText}
+				</Button>
+			</div>
+		</AntdModal>
 	);
 };
 

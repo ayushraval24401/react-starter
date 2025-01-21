@@ -1,12 +1,11 @@
-import { Outlet } from 'react-router-dom';
 import { Layout } from 'antd';
-import React from 'react';
+import AppHeader from 'components/Layout/MainLayout/Header';
+import Sidebar from 'components/Layout/MainLayout/Sidebar';
+import { Outlet } from 'react-router-dom';
 import styles from './index.module.scss';
-import Sidebar from 'components/Layout/Sidebar';
-import AppHeader from 'components/Layout/Header';
 const { Content } = Layout;
 
-const MainLayout: React.FC<{ children: React.ReactNode }> = () => {
+const MainLayout = () => {
 	return (
 		<Layout style={{ minHeight: '100vh' }} className={styles.layout}>
 			<Sidebar />
