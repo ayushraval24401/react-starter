@@ -1,7 +1,8 @@
+// components/Form/InputField.tsx
 import React, { ChangeEvent, useState } from 'react';
-import { Input, Typography, Button } from 'antd';
+import { Input, Typography } from 'antd';
 import { SizeType } from 'antd/es/config-provider/SizeContext';
-import { invalidText } from 'utils/utils';
+import { invalidText, isValidEmail } from 'utils/utils';
 
 type Props = {
 	name: string;
@@ -25,7 +26,9 @@ type Props = {
 	isViewOnly?: boolean;
 	onBlur?: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 	onFocus?: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-	isPassword?: boolean; 
+	isPassword?: boolean;
+	iconPosition?: 'prefix' | 'suffix';
+	iconInLabel?: boolean;
 };
 
 const InputField: React.FC<Props> = ({
@@ -36,7 +39,7 @@ const InputField: React.FC<Props> = ({
 	required = false,
 	isError = false,
 	onChange,
-	helperText = 'Invalid field',
+	helperText,
 	prefix = null,
 	suffix = null,
 	regex,
@@ -50,134 +53,112 @@ const InputField: React.FC<Props> = ({
 	isViewOnly = false,
 	onBlur,
 	onFocus,
-	isPassword = false, // Default is false (not a password field)
+	isPassword = false,
+	iconPosition = 'prefix',
+	iconInLabel = false,
 }) => {
 	const [hasError, setHasError] = useState(false);
-	const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+	const [errorMessage, setErrorMessage] = useState('');
+
+	const validateField = (
+		value: string
+	): { isValid: boolean; message: string } => {
+		// Required field validation
+		if (required && invalidText(value)) {
+			return { isValid: false, message: 'This field is required' };
+		}
+
+		// Email validation for email type
+		if (type === 'email' && !invalidText(value)) {
+			if (!isValidEmail(value)) {
+				return {
+					isValid: false,
+					message: 'Please enter a valid email address',
+				};
+			}
+		}
+
+		// Custom regex validation
+		if (regex && !invalidText(value)) {
+			const regexTest = new RegExp(regex);
+			if (!regexTest.test(value)) {
+				return {
+					isValid: false,
+					message: helperText || 'Invalid format',
+				};
+			}
+		}
+
+		return { isValid: true, message: '' };
+	};
 
 	const handleChange = (value: string) => {
-		if (required) {
-			setHasError(invalidText(value)); // Assuming invalidText is a utility function to check if a field is empty or invalid
-		}
-
-		if (regex) {
-			const regexTest = new RegExp(regex);
-			setHasError(!regexTest.test(value)); // Check if regex validation passes
-		}
-
+		// const validation = validateField(value);
+		// setHasError(!validation.isValid);
+		// setErrorMessage(validation.message);
 		onChange(value);
 	};
 
 	const handleBlur = (
 		e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
 	) => {
-		if (required) {
-			setHasError(invalidText(e.target.value)); // Validate on blur if required
-		}
-
-		if (regex) {
-			const regexTest = new RegExp(regex);
-			setHasError(!regexTest.test(e.target.value)); // Validate regex pattern on blur
-		}
+		const validation = validateField(e.target.value);
+		setHasError(!validation.isValid);
+		setErrorMessage(validation.message);
 
 		if (onBlur) {
-			onBlur(e); // Call the custom onBlur if provided
+			onBlur(e);
 		}
-	};
-
-	const handleFocus = (
-		e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-	) => {
-		if (onFocus) {
-			onFocus(e); // Call the custom onFocus if provided
-		}
-	};
-
-	// Handle password visibility toggle
-	const togglePasswordVisibility = () => {
-		setShowPassword((prevState) => !prevState);
 	};
 
 	return (
 		<div className="input-field">
 			{showLabel && label && (
 				<p style={{ marginBottom: isViewOnly ? '5px' : '' }}>
+					{iconInLabel && (prefix || suffix) && (
+						<span style={{ marginRight: '5px' }}>
+							{prefix || suffix}
+						</span>
+					)}
 					{label}{' '}
 					{required && !isViewOnly && (
 						<span style={{ color: 'red' }}>*</span>
 					)}
 				</p>
 			)}
+
 			{isViewOnly ? (
 				<Typography.Text>{value}</Typography.Text>
 			) : (
 				<div>
 					{!rows ? (
-						isPassword ? (
-							// Password input with visibility toggle
-							<div style={{ position: 'relative' }}>
-								<Input
-									name={name}
-									value={value}
-									placeholder={placeholder}
-									status={
-										isError || hasError
-											? 'error'
-											: undefined
-									}
-									prefix={prefix}
-									suffix={suffix}
-									width={width}
-									required={required}
-									disabled={disabled}
-									type={showPassword ? 'text' : 'password'}
-									size={size}
-									style={style}
-									onChange={(
-										e: ChangeEvent<HTMLInputElement>
-									) => handleChange(e.target.value)}
-									onBlur={handleBlur}
-									onFocus={handleFocus}
-								/>
-								<Button
-									icon={
-										showPassword ? 'eye-invisible' : 'eye'
-									}
-									onClick={togglePasswordVisibility}
-									style={{
-										position: 'absolute',
-										right: '10px',
-										top: '50%',
-										transform: 'translateY(-50%)',
-										background: 'transparent',
-										border: 'none',
-									}}
-								/>
-							</div>
-						) : (
-							// Regular text input
-							<Input
-								name={name}
-								value={value}
-								placeholder={placeholder}
-								status={
-									isError || hasError ? 'error' : undefined
-								}
-								prefix={prefix}
-								suffix={suffix}
-								width={width}
-								required={required}
-								disabled={disabled}
-								type={type}
-								size={size}
-								style={style}
-								onChange={(e: ChangeEvent<HTMLInputElement>) =>
-									handleChange(e.target.value)
-								}
-								onBlur={handleBlur}
-								onFocus={handleFocus}
-							/>
-						)
+						<Input
+							name={name}
+							value={value}
+							placeholder={placeholder}
+							status={isError || hasError ? 'error' : undefined}
+							prefix={
+								iconPosition === 'prefix' && !iconInLabel
+									? prefix
+									: null
+							}
+							suffix={
+								iconPosition === 'suffix' && !iconInLabel
+									? suffix
+									: null
+							}
+							width={width}
+							required={required}
+							disabled={disabled}
+							type={type}
+							size={size}
+							style={style}
+							onChange={(e: ChangeEvent<HTMLInputElement>) =>
+								handleChange(e.target.value)
+							}
+							onBlur={handleBlur}
+							onFocus={onFocus}
+						/>
 					) : (
 						<Input.TextArea
 							name={name}
@@ -193,9 +174,10 @@ const InputField: React.FC<Props> = ({
 								handleChange(e.target.value)
 							}
 							onBlur={handleBlur}
-							onFocus={handleFocus}
+							onFocus={onFocus}
 						/>
 					)}
+
 					{(isError || hasError) && (
 						<p
 							style={{
@@ -204,7 +186,7 @@ const InputField: React.FC<Props> = ({
 								marginLeft: '2px',
 							}}
 						>
-							{helperText}
+							{errorMessage || helperText}
 						</p>
 					)}
 				</div>
