@@ -67,6 +67,9 @@ export const EmployeeHeader = (props: Props) => {
 						handleChange={handleSearch}
 						value={searchValue}
 						size="large"
+						style={{
+							maxWidth: '300px',
+						}}
 					/>
 					<Select
 						className={styles['employee-header-item']}

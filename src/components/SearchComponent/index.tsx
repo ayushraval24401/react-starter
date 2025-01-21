@@ -12,6 +12,7 @@ type Props = {
 	prefixIcon?: any;
 	size?: CustomSize;
 	minHeight?: any;
+	style?: any;
 };
 
 const SearchComponent = (props: Props) => {
@@ -23,6 +24,7 @@ const SearchComponent = (props: Props) => {
 		prefixIcon,
 		size = 'large',
 		minHeight,
+		style,
 	} = props;
 
 	// Handle input change
@@ -32,7 +34,7 @@ const SearchComponent = (props: Props) => {
 
 	return (
 		<Input
-			style={{ minHeight: minHeight }}
+			style={{ minHeight: minHeight, ...style }}
 			className={className}
 			placeholder={placeHolder}
 			prefix={prefixIcon && prefixIcon}

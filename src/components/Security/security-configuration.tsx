@@ -1,4 +1,4 @@
-import MainLayout from 'layouts/MainLayout';
+import MainLayout from 'layouts/mainLayout';
 import { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {

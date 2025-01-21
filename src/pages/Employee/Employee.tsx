@@ -4,8 +4,10 @@ import { TablePaginationConfig } from 'antd/es/table';
 import { FilterValue, SorterResult } from 'antd/es/table/interface';
 import TabPane from 'antd/es/tabs/TabPane';
 import { ButtonInterface } from 'components/Button';
+import SideDrawerWrapper from 'components/SideDrawerWrapper';
 import GlobalTable from 'components/Table';
 import GlobalTabs from 'components/Tabs';
+import EmployeeSidebar from 'features/Employee/EmployeeSidebar';
 import EmployeeTable from 'features/Employee/EmployeeTable';
 import { EmployeeHeader } from 'features/Employee/Header';
 import SalaryTable from 'features/Employee/SalaryTable';
@@ -19,9 +21,25 @@ const EmployeePage = () => {
 	const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
 	const [searchValue, setSearchValue] = useState('');
 	const [statusFilterValue, setStatusFilterValue] = useState('');
+	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+	const [drawerAnimation, setDrawerAnimation] = useState<boolean>(false);
 
 	const handleSearch = (value: string) => {
 		setSearchValue(value);
+	};
+	// Open side drawer with animation
+	const openDrawerHandler = () => {
+		setDrawerAnimation(true);
+		setIsSidebarOpen(true);
+	};
+	// Remove the side drawer
+	const removeDrawerFromDom = () => {
+		setIsSidebarOpen(false);
+	};
+
+	// Close the side drawer with animation
+	const closeDrawerByAnimation = () => {
+		setDrawerAnimation(false); //!isAddUserLoading &&
 	};
 
 	const handleStatusFilter = (value: string) => {
@@ -38,7 +56,7 @@ const EmployeePage = () => {
 			variant: 'primary',
 			isSubmit: true,
 			onClick: () => {
-				console.log('Add Employee button clicked');
+				openDrawerHandler();
 			},
 			disabled: false,
 		},
@@ -190,6 +208,20 @@ const EmployeePage = () => {
 					</TabPane>
 				</GlobalTabs>
 			</div>
+			{isSidebarOpen && (
+				<SideDrawerWrapper
+					isOpen={drawerAnimation}
+					removeDrawerFromDom={removeDrawerFromDom}
+					closeDrawerByAnimation={closeDrawerByAnimation}
+					headerTitle="Add Employee"
+					position="right"
+					width="half"
+				>
+					<EmployeeSidebar
+						closeDrawerByAnimation={closeDrawerByAnimation}
+					/>
+				</SideDrawerWrapper>
+			)}
 		</>
 	);
 };

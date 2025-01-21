@@ -4,61 +4,121 @@ import dayjs, { Dayjs } from 'dayjs';
 
 const { RangePicker } = DatePicker;
 
-type DateRangePickerProps = {
-	value: [Dayjs | null | undefined, Dayjs | null | undefined];
-	onChange: (
-		dates: [Dayjs | null | undefined, Dayjs | null | undefined],
-		dateStrings: [string, string]
-	) => void;
-	placeholder?: [string, string];
-	disabled?: boolean;
+type Props = {
+	name: string;
+	label?: string;
+	value: [string, string]; // Tuple of start and end date strings
 	required?: boolean;
-	format?: string;
-	style?: React.CSSProperties;
+	isError?: boolean;
+	onChange: (value: [string, string]) => void; // Function receives date strings
+	placeholder?: [string, string];
+	helperText?: string;
+	disabled?: boolean;
+	disabledBeforeDates?: string; // String for date boundary
+	disabledAfterDates?: string;
 	className?: string;
-	size?: 'large' | 'middle' | 'small';
 };
 
-const CustomDateRangePicker: React.FC<DateRangePickerProps> = ({
+const DateRangePickerField: React.FC<Props> = ({
+	name,
+	label,
 	value,
-	onChange,
 	placeholder = ['Start Date', 'End Date'],
-	disabled = false,
-	required = false,
-	format = 'YYYY-MM-DD',
-	style,
 	className,
-	size = 'large',
-}: DateRangePickerProps) => {
-	const validValue: [Dayjs | null | undefined, Dayjs | null | undefined] = [
-		value[0] ? dayjs(value[0]) : undefined,
-		value[1] ? dayjs(value[1]) : undefined,
+	isError = false,
+	required = false,
+	onChange,
+	disabled = false,
+	helperText = 'Date range is required',
+	disabledBeforeDates,
+	disabledAfterDates,
+}) => {
+	const handleChange = (
+		dates: [Dayjs | null, Dayjs | null] | null,
+		dateStrings: [string, string]
+	) => {
+		// Convert dates to strings or fallback to empty strings
+		const validDates: [string, string] = dates
+			? [dateStrings[0] || '', dateStrings[1] || '']
+			: ['', ''];
+		onChange(validDates);
+	};
+
+	const rangePresets: any = [
+		{ label: 'Today', value: [dayjs(), dayjs()] },
+		{
+			label: 'This Week',
+			value: [dayjs().startOf('week'), dayjs().endOf('week')],
+		},
+		{
+			label: 'This Month',
+			value: [dayjs().startOf('month'), dayjs().endOf('month')],
+		},
+		{
+			label: 'Yesterday',
+			value: [dayjs().subtract(1, 'day'), dayjs().subtract(1, 'day')],
+		},
+		{
+			label: 'Previous Week',
+			value: [
+				dayjs().subtract(1, 'week').startOf('week'),
+				dayjs().subtract(1, 'week').endOf('week'),
+			],
+		},
+		{
+			label: 'Previous Month',
+			value: [
+				dayjs().subtract(1, 'month').startOf('month'),
+				dayjs().subtract(1, 'month').endOf('month'),
+			],
+		},
 	];
 
 	return (
-		<div className={className} style={style}>
+		<div className="input-field">
+			{label && (
+				<p className="label">
+					{label} {required && <span className="red">*</span>}
+				</p>
+			)}
 			<RangePicker
-				value={validValue} // Pass the tuple with the Dayjs instances or undefined
-				onChange={(dates: any, dateStrings) => {
-					// Handle null values in dates array
-					const validDates: [
-						Dayjs | null | undefined,
-						Dayjs | null | undefined
-					] = [
-						dates[0] ? dayjs(dates[0]) : null,
-						dates[1] ? dayjs(dates[1]) : null,
-					];
-
-					onChange(validDates, dateStrings);
-				}}
-				placeholder={placeholder}
+				style={{ width: '100%' }}
+				className={className}
+				name={name}
+				value={[dayjs(value[0]), dayjs(value[1])]}
+				onChange={handleChange}
+				presets={rangePresets}
 				disabled={disabled}
-				format={format}
-				size={size}
+				format="DD/MM/YYYY"
+				allowClear={false}
+				placeholder={placeholder}
+				disabledDate={(current: Dayjs) => {
+					if (
+						disabledBeforeDates &&
+						current < dayjs(disabledBeforeDates)
+					) {
+						return true;
+					}
+					if (
+						disabledAfterDates &&
+						current > dayjs(disabledAfterDates)
+					) {
+						return true;
+					}
+					return false;
+				}}
+				size="large"
 			/>
-			{required && <span style={{ color: 'red' }}>*</span>}
+			{isError && (
+				<p
+					className="red"
+					style={{ fontSize: '12px', marginLeft: '2px' }}
+				>
+					{helperText}
+				</p>
+			)}
 		</div>
 	);
 };
 
-export default CustomDateRangePicker;
+export default DateRangePickerField;

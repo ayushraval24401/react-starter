@@ -6,6 +6,8 @@ import type { UploadFile, RcFile } from 'antd/es/upload/interface';
 const { Dragger } = Upload;
 
 export interface GlobalUploadProps {
+	label?: string; // Label for the upload field
+	required?: boolean; // Whether the upload is mandatory
 	fileList: UploadFile[];
 	setFileList: any;
 	acceptedTypes: string[];
@@ -18,6 +20,8 @@ export interface GlobalUploadProps {
 }
 
 const GlobalUpload: React.FC<GlobalUploadProps> = ({
+	label,
+	required = false,
 	fileList,
 	setFileList,
 	acceptedTypes,
@@ -61,10 +65,25 @@ const GlobalUpload: React.FC<GlobalUploadProps> = ({
 
 			// Check maximum number of files
 			if (fileList.length >= maxFiles) {
-				const error = `You can only upload a maximum of ${maxFiles} files`;
-				message.error(error);
-				onError?.(error);
-				return Upload.LIST_IGNORE;
+				// Remove the first file from the fileList
+				const updatedFileList = [...fileList];
+				updatedFileList.shift(); // Remove first file
+
+				// Add the new file
+				const newFile: UploadFile = {
+					uid: `${Date.now()}-${file.name}`,
+					name: file.name,
+					status: 'done',
+					size: file.size,
+					type: file.type,
+					originFileObj: file,
+				};
+
+				// Update fileList
+				setFileList([...updatedFileList, newFile]);
+
+				// Return false to prevent default upload behavior
+				return false;
 			}
 
 			// Create a new UploadFile object
@@ -101,6 +120,14 @@ const GlobalUpload: React.FC<GlobalUploadProps> = ({
 
 	return (
 		<div className={className}>
+			{/* Display the label */}
+			{label && (
+				<p style={{ marginBottom: '8px' }}>
+					{label}{' '}
+					{required && <span style={{ color: 'red' }}>*</span>}
+				</p>
+			)}
+
 			<Dragger
 				multiple={multiple}
 				disabled={disabled}
@@ -126,7 +153,8 @@ const GlobalUpload: React.FC<GlobalUploadProps> = ({
 				</p>
 				{maxFiles > 0 && (
 					<p className="ant-upload-hint">
-						Maximum files allowed: {maxFiles}
+						Maximum {maxFiles > 1 ? 'files' : 'file'} allowed:{' '}
+						{maxFiles}
 					</p>
 				)}
 			</Dragger>

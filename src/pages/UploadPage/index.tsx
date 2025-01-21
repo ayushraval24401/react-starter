@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, message } from 'antd';
 import type { UploadFile } from 'antd/es/upload/interface';
-import GlobalUpload from 'components/FileUpload';
+import GlobalUpload from 'components/Form/FileUpload';
 
 const UploadPage: React.FC = () => {
 	const [fileList, setFileList] = useState<UploadFile[]>([]);

@@ -150,7 +150,7 @@ const InputField: React.FC<Props> = ({
 							width={width}
 							required={required}
 							disabled={disabled}
-							type={type}
+							type={isPassword ? 'password' : type}
 							size={size}
 							style={style}
 							onChange={(e: ChangeEvent<HTMLInputElement>) =>
