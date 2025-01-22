@@ -7,8 +7,8 @@ import './styles/global/theme.scss';
 
 function App() {
 	return (
-		<ThemeProvider>
-			<RouterProvider router={router} />
+		<ThemeProvider> 
+				<RouterProvider router={router} /> 
 		</ThemeProvider>
 	);
 }

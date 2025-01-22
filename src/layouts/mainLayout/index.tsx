@@ -1,11 +1,9 @@
-import { Outlet, useNavigate } from 'react-router-dom';
 import { Layout } from 'antd';
-import React, { useState } from 'react';
+import AppHeader from 'components/Layout/MainLayout/Header';
+import Sidebar from 'components/Layout/MainLayout/Sidebar';
+import { Outlet } from 'react-router-dom';
 import styles from './index.module.scss';
-import Sidebar from 'components/Layout/Sidebar';
-import AppHeader from 'components/Layout/Header';
-import Box from 'components/Box';
-
+import React, { useState } from 'react';
 const { Content } = Layout;
 
 // Assuming these are the standard Ant Design sidebar widths

@@ -1,0 +1,17 @@
+// src/components/Layout/MainLayout/Header/index.scss
+.header {
+	background-color: var(--header-bg, #fff);
+	padding: 0 20px;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	height: 64px;
+	width: 100%;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+	z-index: 1;
+
+	.actions {
+		display: flex;
+		align-items: center;
+	}
+}
