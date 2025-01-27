@@ -1,6 +1,6 @@
 import { DatePicker } from 'antd';
 import dayjs, { Dayjs } from 'dayjs';
-import React from 'react';
+import React, { useState } from 'react';
 
 type Props = {
 	name: string;
@@ -37,23 +37,40 @@ const DatePickerField: React.FC<Props> = ({
 	disableSunday = false,
 	style,
 }) => {
-	// Format date for view-only mode
-	const formattedDate = value
-		? dayjs(value).format(
-				picker === 'year'
-					? 'YYYY'
-					: picker === 'month'
-					? 'MMM, YYYY'
-					: 'DD/MM/YYYY'
-		  )
-		: '';
+	const [hasError, setHasError] = useState(false);
+	const [errorMessage, setErrorMessage] = useState('');
+	const [isFocused, setIsFocused] = useState(false);
+	const [isOpen, setIsOpen] = useState(false);
 
-	// Handle date change
+	const handleFocus = () => {
+		setIsFocused(true);
+	};
+
+	const handleBlur = (event: React.FocusEvent<HTMLElement>) => {
+		if (isOpen) return; // Ignore blur if the popup is open
+
+		const value = (event.target as HTMLInputElement).value;
+
+		if (required && !value) {
+			setHasError(true);
+			setErrorMessage(helperText);
+		} else {
+			setHasError(false);
+			setErrorMessage('');
+		}
+	};
+
+	const handleOpenChange = (open: boolean) => {
+		setIsOpen(open);
+		if (!open) {
+			setIsFocused(false); // Reset focus state when the popup closes
+		}
+	};
+
 	const handleChange = (date: Dayjs | null) => {
 		onChange(date ? date.toISOString() : '');
 	};
 
-	// Disabled date logic
 	const isDateDisabled = (current: Dayjs) => {
 		return (
 			(disabledBeforeDates &&
@@ -64,21 +81,28 @@ const DatePickerField: React.FC<Props> = ({
 		);
 	};
 
+	const formattedDate = value
+		? dayjs(value).format(
+				picker === 'year'
+					? 'YYYY'
+					: picker === 'month'
+					? 'MMM, YYYY'
+					: 'DD/MM/YYYY'
+		  )
+		: '';
+
 	return (
 		<div className="input-field" style={style}>
-			{/* Label */}
 			{label && (
 				<p className="input-label">
 					{label} {required && <span className="red">*</span>}
 				</p>
 			)}
 
-			{/* View-Only Mode */}
 			{isViewOnly ? (
 				<p>{formattedDate || 'N/A'}</p>
 			) : (
 				<div>
-					{/* Date Picker */}
 					<DatePicker
 						name={name}
 						value={value ? dayjs(value) : null}
@@ -92,16 +116,22 @@ const DatePickerField: React.FC<Props> = ({
 								: 'DD/MM/YYYY'
 						}
 						disabled={disabled}
+						onFocus={handleFocus}
 						placeholder={placeholder}
 						style={{ width: '100%' }}
 						status={isError ? 'error' : ''}
 						picker={picker}
 						disabledDate={isDateDisabled}
 						allowClear={false}
+						onBlur={handleBlur}
+						onOpenChange={handleOpenChange} // Handle popup open/close
 					/>
 
-					{/* Error Message */}
-					{isError && <p className="input-error">{helperText}</p>}
+					{(isError || hasError) && (
+						<p className="input-error">
+							{errorMessage || helperText}
+						</p>
+					)}
 				</div>
 			)}
 		</div>

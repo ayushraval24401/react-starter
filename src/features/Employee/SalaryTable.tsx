@@ -11,6 +11,7 @@ type SalaryTableProps = {
 	tableData: any[];
 	columns: any[];
 	expandedRowRender: any;
+	loading: boolean;
 };
 
 const SalaryTable = (props: SalaryTableProps) => {
@@ -24,6 +25,7 @@ const SalaryTable = (props: SalaryTableProps) => {
 		tableData,
 		totalRecords,
 		expandedRowRender,
+		loading
 	} = props;
 	return (
 		<>
@@ -31,7 +33,7 @@ const SalaryTable = (props: SalaryTableProps) => {
 				// Data
 				data={tableData}
 				columns={columns}
-				loading={false}
+				loading={loading}
 				// Pagination
 				pagination={true}
 				currentPage={currentPage}

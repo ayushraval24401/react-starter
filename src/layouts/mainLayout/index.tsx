@@ -4,13 +4,14 @@ import Sidebar from 'components/Layout/MainLayout/Sidebar';
 import { Outlet } from 'react-router-dom';
 import styles from './index.module.scss';
 import React, { useState } from 'react';
+import Box from 'components/Box';
 const { Content } = Layout;
 
 // Assuming these are the standard Ant Design sidebar widths
 const EXPANDED_SIDEBAR_WIDTH = 200;
 const COLLAPSED_SIDEBAR_WIDTH = 80;
 
-const MainLayout: React.FC<{ children: React.ReactNode }> = () => {
+const MainLayout = () => {
 	const [collapsed, setCollapsed] = useState(false);
 
 	const toggleCollapse = () => setCollapsed(!collapsed);

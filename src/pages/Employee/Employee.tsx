@@ -1,49 +1,148 @@
-// src/pages/ExamplePage.tsx
+import React, { useEffect, useMemo } from 'react';
+import {
+	keepPreviousData,
+	useMutation,
+	useQuery,
+	useQueryClient,
+} from '@tanstack/react-query';
 import { Button, Space, Tag } from 'antd';
 import { TablePaginationConfig } from 'antd/es/table';
 import { FilterValue, SorterResult } from 'antd/es/table/interface';
 import TabPane from 'antd/es/tabs/TabPane';
 import { ButtonInterface } from 'components/Button';
 import SideDrawerWrapper from 'components/SideDrawerWrapper';
-import GlobalTable from 'components/Table';
 import GlobalTabs from 'components/Tabs';
 import EmployeeSidebar from 'features/Employee/EmployeeSidebar';
 import EmployeeTable from 'features/Employee/EmployeeTable';
 import { EmployeeHeader } from 'features/Employee/Header';
 import SalaryTable from 'features/Employee/SalaryTable';
-import React, { useState } from 'react';
+import { employeeService } from 'services/api/employee';
 import { AddSvg } from 'utils/svgs';
+import { toastText } from 'utils/utils';
+import useDebounce from 'hooks/UseDebounce';
 
-const EmployeePage = () => {
-	const [currentPage, setCurrentPage] = useState(1);
-	const [pageSize, setPageSize] = useState(10);
-	const [totalRecords, setTotalRecords] = useState(100);
-	const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-	const [searchValue, setSearchValue] = useState('');
-	const [statusFilterValue, setStatusFilterValue] = useState('');
-	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-	const [drawerAnimation, setDrawerAnimation] = useState<boolean>(false);
+interface EmployeeFilters {
+	currentPage: number;
+	pageSize: number;
+	searchValue: string;
+	statusFilterValue: string;
+}
+
+const EmployeePage: React.FC = () => {
+	const [filters, setFilters] = React.useState<EmployeeFilters>({
+		currentPage: 1,
+		pageSize: 10,
+		searchValue: '',
+		statusFilterValue: '',
+	});
+	const [selectedRowKeys, setSelectedRowKeys] = React.useState<React.Key[]>(
+		[]
+	);
+	const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
+	const [drawerAnimation, setDrawerAnimation] = React.useState(false);
+
+	const useDebouncedSearch = useDebounce(filters.searchValue, 500);
+
+	const {
+		data,
+		isFetching: isLoading,
+		isError,
+		error,
+		isSuccess,
+	} = useQuery({
+		queryKey: [
+			'employees',
+			{ ...filters, searchValue: useDebouncedSearch },
+		],
+		queryFn: () =>
+			employeeService.getEmployee({
+				currentPage: filters.currentPage,
+				pageSize: filters.pageSize,
+				search: useDebouncedSearch,
+				sortBy: 'name',
+				sortOrder: 'asc',
+				status: filters.statusFilterValue,
+			}),
+		placeholderData: keepPreviousData,
+	});
+
+	console.log('isFetching: ', isLoading);
+	useEffect(() => {
+		if (isSuccess) {
+			toastText('Employees fetched successfully', 'success');
+		}
+	}, [isSuccess]);
+
+	useEffect(() => {
+		if (isError) {
+			toastText(
+				(error as any)?.response?.data?.message ||
+					'Failed to fetch employees',
+				'error'
+			);
+		}
+	}, [isError, error]);
 
 	const handleSearch = (value: string) => {
-		setSearchValue(value);
-	};
-	// Open side drawer with animation
-	const openDrawerHandler = () => {
-		setDrawerAnimation(true);
-		setIsSidebarOpen(true);
-	};
-	// Remove the side drawer
-	const removeDrawerFromDom = () => {
-		setIsSidebarOpen(false);
-	};
-
-	// Close the side drawer with animation
-	const closeDrawerByAnimation = () => {
-		setDrawerAnimation(false); //!isAddUserLoading &&
+		setFilters((prev) => ({ ...prev, searchValue: value }));
 	};
 
 	const handleStatusFilter = (value: string) => {
-		setStatusFilterValue(value);
+		setFilters((prev) => ({ ...prev, statusFilterValue: value }));
+	};
+
+	const openDrawerHandler = React.useCallback(() => {
+		setDrawerAnimation(true);
+		setIsSidebarOpen(true);
+	}, []);
+
+	const closeDrawerByAnimation = React.useCallback(() => {
+		setDrawerAnimation(false);
+	}, []);
+
+	const removeDrawerFromDom = React.useCallback(() => {
+		setIsSidebarOpen(false);
+	}, []);
+
+	const handleTableChange = React.useCallback(
+		(
+			pagination: TablePaginationConfig,
+			filters: Record<string, FilterValue | null>,
+			sorter: SorterResult<any> | SorterResult<any>[]
+		) => {
+			setFilters((prev) => ({
+				...prev,
+				currentPage: pagination.current || 1,
+				pageSize: pagination.pageSize || 10,
+			}));
+		},
+		[]
+	);
+
+	const handleSelectChange = React.useCallback(
+		(newSelectedRowKeys: React.Key[]) => {
+			setSelectedRowKeys(newSelectedRowKeys);
+		},
+		[]
+	);
+
+	const addEmployeeMutation = useMutation({
+		mutationFn: (data) => employeeService.addEmployee(data),
+		onSuccess: () => {
+			toastText('Employee added successfully', 'success');
+			// queryClient.invalidateQueries(['employees']);
+			setIsSidebarOpen(false);
+		},
+		onError: (error: any) => {
+			toastText(
+				error?.response?.data?.message || 'Failed to add employee',
+				'error'
+			);
+		},
+	});
+
+	const handleAddEmployee = (employeeData: any) => {
+		addEmployeeMutation.mutate(employeeData);
 	};
 
 	const buttons: ButtonInterface[] = [
@@ -55,155 +154,109 @@ const EmployeePage = () => {
 			fontSize: '16px',
 			variant: 'primary',
 			isSubmit: true,
-			onClick: () => {
-				openDrawerHandler();
+			onClick: openDrawerHandler,
+			disabled: isLoading,
+		},
+	];
+
+	const columns = useMemo(
+		() => [
+			{
+				title: 'ID',
+				dataIndex: 'id',
+				key: 'id',
+				width: 80,
+				sorter: true,
+				fixed: 'left' as const,
 			},
-			disabled: false,
-		},
-	];
+			{
+				title: 'Name',
+				dataIndex: 'name',
+				key: 'name',
+				width: 150,
+				sorter: true,
+			},
+			{
+				title: 'Age',
+				dataIndex: 'age',
+				key: 'age',
+				width: 100,
+				sorter: true,
+			},
+			{
+				title: 'Status',
+				dataIndex: 'status',
+				key: 'status',
+				width: 120,
+				render: (status: string) => (
+					<Tag color={status === 'active' ? 'green' : 'red'}>
+						{status.toUpperCase()}
+					</Tag>
+				),
+			},
+			{
+				title: 'Actions',
+				key: 'actions',
+				fixed: 'right' as const,
+				width: 120,
+				render: (_: any, record: any) => (
+					<Space>
+						<Button size="small">Edit</Button>
+						<Button size="small" danger>
+							Delete
+						</Button>
+					</Space>
+				),
+			},
+		],
+		[]
+	);
 
-	// Sample data with more fields
-	const tableData = Array.from({ length: 100 }, (_, index) => ({
-		id: index + 1,
-		name: `User ${index + 1}`,
-		age: Math.floor(Math.random() * 60) + 20,
-		email: `user${index + 1}@example.com`,
-		address: `Address ${index + 1}, City ${index % 10}, Country`,
-		status: index % 3 === 0 ? 'active' : 'inactive',
-		joinDate: new Date(
-			Date.now() - Math.floor(Math.random() * 10000000000)
-		).toLocaleDateString(),
-	}));
-
-	const columns = [
-		{
-			title: 'ID',
-			dataIndex: 'id',
-			key: 'id',
-			width: 80,
-			sorter: true,
-			fixed: 'left' as const,
-		},
-		{
-			title: 'Name',
-			dataIndex: 'name',
-			key: 'name',
-			width: 150,
-			sorter: true,
-		},
-		{
-			title: 'Age',
-			dataIndex: 'age',
-			key: 'age',
-			width: 100,
-			sorter: true,
-		},
-		{
-			title: 'Status',
-			dataIndex: 'status',
-			key: 'status',
-			width: 120,
-			render: (status: string) => (
-				<Tag color={status === 'active' ? 'green' : 'red'}>
-					{status.toUpperCase()}
-				</Tag>
-			),
-		},
-		{
-			title: 'Email',
-			dataIndex: 'email',
-			key: 'email',
-			width: 200,
-		},
-		{
-			title: 'Join Date',
-			dataIndex: 'joinDate',
-			key: 'joinDate',
-			width: 150,
-			sorter: true,
-		},
-		{
-			title: 'Address',
-			dataIndex: 'address',
-			key: 'address',
-			width: 300,
-		},
-		{
-			title: 'Actions',
-			key: 'actions',
-			fixed: 'right' as const,
-			width: 120,
-			render: (_: any, record: any) => (
-				<Space>
-					<Button size="small">Edit</Button>
-					<Button size="small" danger>
-						Delete
-					</Button>
-				</Space>
-			),
-		},
-	];
-
-	const expandedRowRender = (record: any) => {
-		return (
+	const expandedRowRender = React.useCallback(
+		(record: any) => (
 			<p style={{ margin: 0 }}>
 				Extended Info for {record.name}: Lorem ipsum dolor sit amet...
 			</p>
-		);
-	};
-
-	const handleTableChange = (
-		pagination: TablePaginationConfig,
-		filters: Record<string, FilterValue | null>,
-		sorter: SorterResult<any> | SorterResult<any>[]
-	) => {
-		setCurrentPage(pagination.current || 1);
-		setPageSize(pagination.pageSize || 10);
-		// Handle filters and sorter here
-	};
-
-	const handleSelectChange = (newSelectedRowKeys: React.Key[]) => {
-		setSelectedRowKeys(newSelectedRowKeys);
-	};
+		),
+		[]
+	);
 
 	return (
 		<>
-			<div
-				style={{
-					maxHeight: 'calc(100vh - 250px)',
-				}}
-			>
+			<div style={{ maxHeight: 'calc(100vh - 250px)' }}>
 				<EmployeeHeader
 					buttons={buttons}
 					handleSearch={handleSearch}
 					handleStatusFilter={handleStatusFilter}
-					searchValue={searchValue}
-					statusFilterValue={statusFilterValue}
+					searchValue={filters.searchValue}
+					statusFilterValue={filters.statusFilterValue}
 				/>
 				<GlobalTabs defaultActiveKey="1">
-					<TabPane tab="Tab 1" key="1">
+					<TabPane tab="Employees" key="1">
 						<EmployeeTable
 							columns={columns}
-							currentPage={currentPage}
+							currentPage={filters.currentPage}
 							handleSelectChange={handleSelectChange}
 							handleTableChange={handleTableChange}
-							pageSize={pageSize}
+							pageSize={filters.pageSize}
 							selectedRowKeys={selectedRowKeys}
-							tableData={tableData}
-							totalRecords={totalRecords}
+							tableData={data?.data?.data}
+							totalRecords={data?.data?.totalRecords || 0}
+							loading={isLoading}
 						/>
 					</TabPane>
-					<TabPane tab="Tab 2" key="2">
+					<TabPane tab="Salaries" key="2">
 						<SalaryTable
 							columns={columns}
-							currentPage={currentPage}
+							currentPage={filters.currentPage}
 							handleSelectChange={handleSelectChange}
 							handleTableChange={handleTableChange}
-							pageSize={pageSize}
+							pageSize={filters.pageSize}
 							selectedRowKeys={selectedRowKeys}
-							tableData={tableData}
-							totalRecords={totalRecords}
+							tableData={data?.data?.data}
+							totalRecords={data?.data?.totalRecords || 0}
 							expandedRowRender={expandedRowRender}
+							loading={isLoading}
 						/>
 					</TabPane>
 				</GlobalTabs>
@@ -219,6 +272,8 @@ const EmployeePage = () => {
 				>
 					<EmployeeSidebar
 						closeDrawerByAnimation={closeDrawerByAnimation}
+						onSubmit={handleAddEmployee}
+						isLoading={addEmployeeMutation.isPending}
 					/>
 				</SideDrawerWrapper>
 			)}

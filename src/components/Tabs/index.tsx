@@ -15,7 +15,11 @@ const GlobalTabs: React.FC<GlobalTabsProps> = ({
 }) => {
 	return (
 		<div className="tabsWrapper">
-			<Tabs {...props} tabBarExtraContent={extraContent}>
+			<Tabs
+				{...props}
+				tabBarExtraContent={extraContent}
+				destroyInactiveTabPane
+			>
 				{children}
 			</Tabs>
 		</div>

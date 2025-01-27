@@ -3,10 +3,8 @@
 
 .sidebar {
 	background-color: $sidebar-bg;
-	height: 100vh;
 	display: flex;
 	flex-direction: column;
-	overflow: hidden; // Prevent sidebar itself from scrolling
 
 	.logoContainer {
 		display: flex;
@@ -69,7 +67,7 @@
 
 	.menu {
 		border-right: none;
-
+		height: calc(100vh - 64px);
 		:global {
 			.ant-menu-item {
 				color: $text-color;

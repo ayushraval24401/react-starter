@@ -8,6 +8,7 @@ type EmployeeTableProps = {
 	handleSelectChange: (selectedRowKeys: React.Key[]) => void;
 	handleTableChange: (pagination: any, filters: any, sorter: any) => void;
 	tableData: any[];
+	loading: boolean;
 	columns: any[];
 };
 const EmployeeTable = (props: EmployeeTableProps) => {
@@ -19,6 +20,7 @@ const EmployeeTable = (props: EmployeeTableProps) => {
 		pageSize,
 		selectedRowKeys,
 		tableData,
+		loading,
 		totalRecords,
 	} = props;
 	return (
@@ -26,7 +28,7 @@ const EmployeeTable = (props: EmployeeTableProps) => {
 			<GlobalTable
 				data={tableData}
 				columns={columns}
-				loading={false}
+				loading={loading}
 				pagination={true}
 				currentPage={currentPage}
 				pageSize={pageSize}

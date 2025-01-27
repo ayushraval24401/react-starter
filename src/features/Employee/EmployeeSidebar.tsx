@@ -20,6 +20,8 @@ import { hasFormError, validateFormData } from 'utils/utils';
 
 type SideDrawerBodyProps = {
 	closeDrawerByAnimation?: any;
+	onSubmit?: any;
+	isLoading?: boolean;
 };
 
 const dropDownOptions = [
@@ -101,7 +103,7 @@ const AddEmployee: FC<SideDrawerBodyProps> = (props) => {
 	};
 
 	// Generic blur handler
-	const { closeDrawerByAnimation } = props;
+	const { closeDrawerByAnimation, onSubmit, isLoading } = props;
 
 	const buttons: ButtonInterface[] = [
 		{
@@ -109,7 +111,7 @@ const AddEmployee: FC<SideDrawerBodyProps> = (props) => {
 			isLoading: false,
 			className: 'btn-cancel',
 			isSubmit: true,
-			disabled: loading,
+			disabled: isLoading,
 			fontSize: '1.8rem',
 			minWidth: '12rem',
 			minHeight: '4rem',
@@ -120,7 +122,7 @@ const AddEmployee: FC<SideDrawerBodyProps> = (props) => {
 		},
 		{
 			text: 'Save',
-			isLoading: loading,
+			isLoading: isLoading,
 			className: 'btn-blue',
 			isSubmit: true,
 			fontSize: '1.8rem',
@@ -154,7 +156,10 @@ const AddEmployee: FC<SideDrawerBodyProps> = (props) => {
 		setFormErrors(checkFormError as unknown as FormErrors);
 
 		const hasError = hasFormError(checkFormError);
-		console.log('hasError: ', hasError);
+
+		if (!hasError) {
+			onSubmit(formData);
+		}
 	};
 
 	return (

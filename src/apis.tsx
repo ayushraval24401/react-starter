@@ -26,8 +26,6 @@ export const setNavigate = (navigateInstance: any) => {
 axios.interceptors.response.use(
 	(response) => response,
 	(error) => {
-		
-
 		if (
 			error.response &&
 			error.response.status === 401 &&
