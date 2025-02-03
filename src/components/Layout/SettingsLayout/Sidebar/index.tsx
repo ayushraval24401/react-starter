@@ -23,7 +23,7 @@ const Sidebar: React.FC = () => {
 
 	const handleMenuClick = ({ key }: { key: string }) => {
 		const routes: { [n: string]: string } = {
-			'1': '/dashboard',
+			'1': '/',
 			'2': '/employee',
 			'3': '/time-activities',
 			'4': '/payroll',

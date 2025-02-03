@@ -12,8 +12,8 @@ import 'antd/dist/reset.css';
 const queryClient = new QueryClient({
 	defaultOptions: {
 		queries: {
-			staleTime: 150000,
-			retry: 1,
+			staleTime: 1000 * 60 * 5, // 5 minutes
+			retry: 1, // retry 1 time on failure
 		},
 	},
 });

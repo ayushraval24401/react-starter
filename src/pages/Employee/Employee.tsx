@@ -130,7 +130,7 @@ const EmployeePage: React.FC = () => {
 		mutationFn: (data) => employeeService.addEmployee(data),
 		onSuccess: () => {
 			toastText('Employee added successfully', 'success');
-			// queryClient.invalidateQueries(['employees']);
+			// queryClient.invalidateQueries(['employees']);/dashboard
 			setIsSidebarOpen(false);
 		},
 		onError: (error: any) => {

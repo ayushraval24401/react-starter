@@ -28,7 +28,7 @@ const Sidebar = (props: SidebarProps) => {
 	const handleMenuClick = ({ key }: { key: string }) => {
 		// Map the menu keys to their respective routes
 		const routes: { [n: string]: string } = {
-			'1': '/dashboard',
+			'1': '/',
 			'2': '/employee',
 			'3': '/time-activities',
 			'4': '/payroll',
